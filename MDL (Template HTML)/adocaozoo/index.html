@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Adoption</title>
+
+    <!--css-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-blue.min.css" />
+    <!--css-->
+
+    <!-- meu css-->
+    <link rel="stylesheet" href="css/my-style.css">
+    <!-- meu css-->
+
+
+    <!--js-->
+    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <!--js-->
+
+    <!-- meu js -->
+    <script src="js/chris.js"></script>
+    <!-- meu js -->
+
+
+</head>
+
+
+<body class="background-cinza">
+    <!-- container principal -->
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+        <!-- header -->
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+
+                <span class="mdl-layout-title">Dashboard
+							</span>
+                <div class="mdl-layout-spacer"></div>
+
+                <!--menu da direita -->
+                <nav class="mdl-navigation esconde-celular">
+                    <a href="javascript:void(0);" onclick="home();" id="home_link" class="mdl-navigation__link">Home</a>
+                    <a href="javascript:void(0);" onclick="adoption();" id="adoption_link" class="mdl-navigation__link">Adoption</a>
+                    <a href="javascript:void(0);" onclick="about();" id="about_link" class="mdl-navigation__link">About</a>
+                    <a href="javascript:void(0);" onclick="contact();" id="contact_link" class="mdl-navigation__link">Contact</a>
+                </nav>
+                <!--menu da direita -->
+
+            </div>
+        </header>
+        <!-- header -->
+
+        <!-- Menu escondido  -->
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">Introdução 2</span>
+            <nav class="mdl-navigation">
+
+                <a href="#" class="mdl-navigation__link">Link 1</a>
+                <a href="#" class="mdl-navigation__link">Link 2</a>
+                <a href="#" class="mdl-navigation__link">Link 3</a>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="pesquis">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input class="mdl-textfield__input" type="text" id="pesquis">
+                    </div>
+                </div>
+
+                <!-- so funciona qunado a tela esta a baixo de 400px -->
+                <div class="mostra-celular">
+
+                    <nav class="mdl-navigation mostra-celular">
+                        <a href="#" class="mdl-navigation__link mdl-badge" data-badge="5">link 1</a>
+                        <a href="#" class="mdl-navigation__link mdl-badge" data-badge="@">link 2</a>
+                        <a href="#" class="mdl-navigation__link mdl-badge" data-badge="@">Link 3</a>
+                    </nav>
+
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="pesquisaa">
+                            <i class="material-icons">search</i>
+                        </label>
+
+                        <div class="mdl-textfield__expandable-holder">
+                            <input class="mdl-textfield__input" type="text" id="pesquisaa">
+                        </div>
+
+                    </div>
+                </div>
+                <!-- so funciona qunado a tela esta a baixo de 400px -->
+
+            </nav>
+        </div>
+        <!-- Menu escondido  -->
+
+        <!-- Conteudo Principal-->
+        <div class="mdl-layout__content">
+            <main>
+
+                <!-- content -->
+                <div class="marginCarde">
+
+                    <!-- Jogue conteudo aqui -->
+
+
+                    <!-- carde -->
+                    <div class="demo-card-wide mdl-card mdl-shadow--2dp marginDentroDoCarde" id="retorno-ajax">
+
+
+
+
+
+
+
+                    </div>
+                    <!-- carde -->
+
+
+
+
+
+                    <!-- Jogue conteudo aqui -->
+                </div>
+                <!-- content -->
+
+                <!-- footer -->
+                <footer class="mdl-mega-footer background-branco">
+
+                    <div class="mdl-mega-footer--top-section">
+
+                        <!-- texto do footer -->
+                        <div class="">
+
+                            <div class="texto">
+                                <p>Plese ensure you check the tenns of our test zoo site</p>
+                            </div>
+
+                        </div>
+                        <!-- texto do footer -->
+
+                    </div>
+                </footer>
+
+                <!-- footer -->
+
+            </main>
+        </div>
+        <!-- Conteudo Principal-->
+
+    </div>
+    <!-- container principal -->
+
+</body>
+
+</html>
