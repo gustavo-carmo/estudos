@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Curso Javascript</title>
+</head>
+
+<body>
+
+    <!-- Uma dica é deixar o script como ultima linha do console, pois assim garantimos que quando for necessário a utilização do mesmo ele esteja na tela -->
+    <script>
+        
+        function retornaSexo(sexo) {
+            
+            // == faz a comparação ignorando o tipo exemplo: 1 == "1" resultado true
+            // === faz a comparação inclusive entre tipo exemplo: 1 === "1" resultado false
+
+            if (sexo.toUpperCase() === 'M') {
+                return "Masculino";
+            }
+
+            if (sexo.toUpperCase() === 'F') {
+                return "Feminino";
+            }
+
+            return "Sexo não definido";
+        }
+        // é possivel fazer if (false) {} else if (false) {} else {}
+
+        function retornaSexoComSwitchCase(sexo) {
+            
+            switch (sexo.toUpperCase()) {
+                case 'M':
+                    return "Masculino";
+                case 'F':
+                    return "Feminino";
+                default:
+                    return "Sexo não definido";
+            }
+        }
+
+        console.log(retornaSexo('m'));
+        console.log(retornaSexoComSwitchCase('f'));
+    </script>
+</body>
+</html>
