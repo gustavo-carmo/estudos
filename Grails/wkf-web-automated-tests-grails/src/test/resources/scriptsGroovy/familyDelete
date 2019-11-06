@@ -1,0 +1,3 @@
+import br.com.careman.domain.*
+
+	Family.findByName("%name%").delete(failOnError: true)

@@ -1,0 +1,9 @@
+import br.com.careman.domain.*
+
+	new Carrier(
+		    name: "%name%", 
+        	alias: "%alias%", 
+		    status: "ENABLED", 
+		    phoneNumber: "1186750434",
+        	contactName: "Contato1"
+		).save(failOnError: true)

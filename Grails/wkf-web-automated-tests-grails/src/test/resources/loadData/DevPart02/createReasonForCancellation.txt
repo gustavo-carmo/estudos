@@ -1,0 +1,47 @@
+import br.com.careman.domain.*
+
+['NOK - ENDERECO NAO LOCALIZADO',
+ 'NOK - SEM COMUNICACAO',
+ 'NOK - ESTABELECIMENTO FECHADO',
+ 'NOK - NAO AUTORIZADO PELO CLIENTE',
+ 'NOK - FALTA ASSINATURA DO CONTRATO',
+ 'NOK - INSCRICAO ESTADUAL INVALIDA',
+ 'NOK - CEP INVALIDO',
+ 'NOK - RAZAO SOCIAL INVALIDA',
+ 'NOK - EQUIPAMENTO NAO ESTA NO LOCAL',
+ 'NOK Contato EC, endereço divergente',
+ 'NOK Contato EC não autorizou instal',
+ 'NOK Contato cliente EC sem infraest',
+ 'NOK Contato EC Banco solicitou canc',
+ 'NOK Contato EC, POS de outro fornec',
+ 'NOK Chamado duplicado',
+ 'NOK CNPJ baixado no SINTEGRA',
+ 'PENDENTE NO ESTABELECIMENTO',
+ 'PENDENTE NA AGENCIA',
+ 'NOK - OUTRO'
+].each {
+    def instance = new ReasonForCancellation(status:'ENABLED', name:it)
+    instance.save()
+    println "${instance} (${instance.errors})"
+}
+/*
+    NOK - ENDERECO NAO LOCALIZADO (grails.validation.ValidationErrors: 0 errors)
+    NOK - SEM COMUNICACAO (grails.validation.ValidationErrors: 0 errors)
+    NOK - ESTABELECIMENTO FECHADO (grails.validation.ValidationErrors: 0 errors)
+    NOK - NAO AUTORIZADO PELO CLIENTE (grails.validation.ValidationErrors: 0 errors)
+    NOK - FALTA ASSINATURA DO CONTRATO (grails.validation.ValidationErrors: 0 errors)
+    NOK - INSCRICAO ESTADUAL INVALIDA (grails.validation.ValidationErrors: 0 errors)
+    NOK - CEP INVALIDO (grails.validation.ValidationErrors: 0 errors)
+    NOK - RAZAO SOCIAL INVALIDA (grails.validation.ValidationErrors: 0 errors)
+    NOK - EQUIPAMENTO NAO ESTA NO LOCAL (grails.validation.ValidationErrors: 0 errors)
+    NOK Contato EC, endereço divergente (grails.validation.ValidationErrors: 0 errors)
+    NOK Contato EC não autorizou instal (grails.validation.ValidationErrors: 0 errors)
+    NOK Contato cliente EC sem infraest (grails.validation.ValidationErrors: 0 errors)
+    NOK Contato EC Banco solicitou canc (grails.validation.ValidationErrors: 0 errors)
+    NOK Contato EC, POS de outro fornec (grails.validation.ValidationErrors: 0 errors)
+    NOK Chamado duplicado (grails.validation.ValidationErrors: 0 errors)
+    NOK CNPJ baixado no SINTEGRA (grails.validation.ValidationErrors: 0 errors)
+    PENDENTE NO ESTABELECIMENTO (grails.validation.ValidationErrors: 0 errors)
+    PENDENTE NA AGENCIA (grails.validation.ValidationErrors: 0 errors)
+    NOK - OUTRO (grails.validation.ValidationErrors: 0 errors)
+*/

@@ -1,9 +1,8 @@
-### MEUS IGNORES
+########################################### MEUS IGNORES ###########################################
 
-node_modules/
 Database client Robo 3t/
 
-### GRADLE
+########################################### GRADLE ###########################################
 
 .gradle
 /build/
@@ -20,7 +19,7 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 
-### GRAILS
+########################################### GRAILS ###########################################
 
 # .gitignore for Grails 1.2 and 1.3
 # Although this should work for most versions of grails, it is
@@ -55,3 +54,17 @@ gradle-app.setting
 
 # "temporary" build files
 /target
+
+########################################### NODE ###########################################
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/

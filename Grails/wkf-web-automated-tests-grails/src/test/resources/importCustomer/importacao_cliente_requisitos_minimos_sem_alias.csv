@@ -1,0 +1,2 @@
+contractorAlias,name,alias,documentType,documentNumber,phoneNumber,status,address,zipCode,stateName,cityName
+CONTRACTOR_GENERIC,Import_Consumer_Without_Alias,,CNPJ,30232242000171,1196388547,ENABLED,Av. Teste,45789954,Rio de Janeiro,Rio de Janeiro

@@ -1,0 +1,3 @@
+import br.com.careman.domain.*
+
+	Equipment.findBySerialNumber("%serialNumber%").delete(failOnError: true)

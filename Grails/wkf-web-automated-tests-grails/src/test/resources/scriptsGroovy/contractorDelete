@@ -1,0 +1,3 @@
+import br.com.careman.domain.*
+
+	Contractor.findByDocumentNumber("%documentNumber%").delete(failOnError: true, flush: true)

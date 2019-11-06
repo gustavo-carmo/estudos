@@ -1,0 +1,28 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+
+	def addressInstance = new Address()
+	
+		addressInstance.address = "%address%"
+		addressInstance.number = "%addressNumber%"
+		addressInstance.zipCode = "%zipCode%"
+		addressInstance.city = City.findByNameAndState("%city%", State.findByName("%state%"))
+		addressInstance.save(failOnError: true, flush: true)
+		
+	def serviceProvider = new ServiceProvider(address: addressInstance)
+	
+		serviceProvider.hq = %hq%
+		if (!serviceProvider.hq) {
+			serviceProvider.headquarters = ServiceProvider.findByName("%serviceProviderHeadquartersName%")
+		}
+		serviceProvider.documentType = "%documentType%"
+		serviceProvider.documentNumber = "%documentNumber%"
+		serviceProvider.technicianStockControlField = %technicianStockControlField%
+		serviceProvider.contactName = "%contactName%"
+		serviceProvider.status = "ENABLED"
+		serviceProvider.name = "%name%"
+		serviceProvider.alias = "%alias%"
+		serviceProvider.email = "%email%"
+		serviceProvider.phoneNumber = "%phoneNumber%"
+		serviceProvider.type = "%serviceProviderType%"
+		serviceProvider.save(failOnError: true, flush: true)

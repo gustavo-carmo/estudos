@@ -1,0 +1,7 @@
+import br.com.careman.domain.*
+
+	new ServiceGroup(
+		    name: "%name%", 
+		    status: "ENABLED", 
+		    type: "%type%"
+		).save(failOnError: true)

@@ -1,0 +1,10 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.OpeningHoursOptions
+import br.com.careman.groovy.mapping.TimeDurationUserType
+import groovy.time.TimeDuration
+
+	def day = OpeningHours.where {
+		(dayOfWeek == "%day%" && startAt == new TimeDuration(%startAt%, 0, 0, 0) && endAt == new TimeDuration(%endAt%, 0, 0, 0))
+	}
+	
+	day.find().delete(failOnError: true, flush: true)

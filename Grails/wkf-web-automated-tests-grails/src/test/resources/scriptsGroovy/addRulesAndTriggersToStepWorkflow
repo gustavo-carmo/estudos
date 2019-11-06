@@ -1,0 +1,30 @@
+import br.com.careman.domain.*
+
+def workflow = Workflow.findByName("%workflow%")
+def from = StepStatus.findByName("%from%")
+def to = StepStatus.findByName("%to%")
+def identifiers = ["%identifiers%"]
+
+def rules = []
+
+def step = Step.findByWorkflowAndFromAndTo(
+    workflow, 
+    from, 
+    to
+)
+
+if (step) {
+    identifiers.each { identifier ->
+
+        StepRule.findAll().each { stepRule ->
+            if (identifier == stepRule.getIdentifier()) {
+                rules << stepRule
+            }
+        }
+
+    }
+
+    step.rules = rules
+
+    step.save(failOnError: true)
+}

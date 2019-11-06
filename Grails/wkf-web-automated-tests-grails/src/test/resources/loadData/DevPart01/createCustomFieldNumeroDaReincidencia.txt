@@ -1,0 +1,26 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+    
+def customFieldInstance = new CustomField(name: "Número da Reincidência", status: "ENABLED", type: CustomFieldType.SERVICE_ORDER, kind: CustomFieldKind.LIST)
+
+customFieldInstance.addToItems(new CustomFieldItem(name: "0", status: "ENABLED"))
+customFieldInstance.addToItems(new CustomFieldItem(name: "1", status: "ENABLED"))
+customFieldInstance.addToItems(new CustomFieldItem(name: "2", status: "ENABLED"))
+customFieldInstance.addToItems(new CustomFieldItem(name: "3", status: "ENABLED"))
+
+customFieldInstance.addToServiceGroups(ServiceGroup.findByName("Reincidência"))
+
+println customFieldInstance.validate()
+println customFieldInstance.save()
+println customFieldInstance.type
+println customFieldInstance.kind
+println customFieldInstance.serviceGroups
+println customFieldInstance.items.collect{String.valueOf(it)}.sort()
+
+// expected
+// true 
+// Número da Reincidência
+// SERVICE_ORDER
+// LIST
+// [Reincidência]
+// [0, 1, 2, 3]

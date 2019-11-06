@@ -1,0 +1,2 @@
+serialNumber,status,situation,quantity,contractor_alias,model_name,serviceProvider_alias,location_name,warranty_provider_name,warranty_type,warranty_created_date,warranty_date_end,warranty_id,customer_document_type,customer_document_number,custom_fields,po,si
+10000000002,ENABLED,GOOD,,CONTRACTOR_GENERIC,MODEL_GENERIC_PART,SERVICE_PROVIDER_GENERIC_MATRIZ,Porto Alegre,WARRANTY_GENERIC_SERVICE,SERVICE,2016-10-11,2016-10-21,5,CNPJ,71632433000108,,9517538,9633571

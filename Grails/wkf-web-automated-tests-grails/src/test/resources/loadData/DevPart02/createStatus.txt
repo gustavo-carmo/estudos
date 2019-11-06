@@ -1,0 +1,102 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+import static br.com.careman.groovy.enums.StepStatusType.*
+import static br.com.careman.groovy.enums.WorkflowType.*
+
+[
+    [workflowType:SERVICE_ORDER, type:START, name:'Nova'],
+    [workflowType:SERVICE_ORDER, type:END_WITH_FAIL, name:'Cancelado'],
+    [workflowType:SERVICE_ORDER, type:END_WITH_SUCCESS, name:'Finalizado'],
+    [workflowType:SERVICE_ORDER, type:WITH_TECHNICIAN, name:'Em Campo'],
+    [workflowType:SERVICE_ORDER, name:'Encaminhado'],
+    [workflowType:SERVICE_ORDER, type:PRE_END, name:'Pre-Finalizado'],
+    [workflowType:SERVICE_ORDER, name:'Para Aprovação'],
+    [workflowType:SERVICE_ORDER, name:'Para Encerramento'],
+    [workflowType:SERVICE_ORDER, name:'Cancelado (Pendente Autorização)'],
+    [workflowType:SERVICE_ORDER, name:'Reencaminhado'],
+    [workflowType:SERVICE_ORDER, name:'Aprovado'],
+    [workflowType:SERVICE_ORDER, name:'Conferência no Destino'],
+    [workflowType:SERVICE_ORDER, name:'Encaminhado Manut'],
+    [workflowType:SERVICE_ORDER, type:END_WITH_SUCCESS, name:'Finalizado (Sem Troca)'],
+
+    [workflowType:REPAIR_ORDER, type:START, name:'RR Abierta'],
+    [workflowType:REPAIR_ORDER, name:'Asignada'],
+    [workflowType:REPAIR_ORDER, name:'En Reparo'],
+    [workflowType:REPAIR_ORDER, name:'Reparacion OK'],
+    [workflowType:REPAIR_ORDER, name:'Irreparable'],
+    [workflowType:REPAIR_ORDER, type:QA, name:'QA_Lab'],
+    [workflowType:REPAIR_ORDER, name:'QA Aprobado'],
+    [workflowType:REPAIR_ORDER, name:'QA Rechazado'],
+    [workflowType:REPAIR_ORDER, name:'Bodega Egreso'],
+    [workflowType:REPAIR_ORDER, type:END_WITH_SUCCESS, name:'Entregado OK'],
+    [workflowType:REPAIR_ORDER, type:END_WITH_FAIL, name:'Entregado NOK'],
+    [workflowType:REPAIR_ORDER, name:'Bodega Baja'],
+
+    [workflowType:SHIPMENT_ORDER, type:START, name:'Nova'],
+    [workflowType:SHIPMENT_ORDER, name:'Preparação'],
+    [workflowType:SHIPMENT_ORDER, type:END_WITH_SUCCESS, name:'Despachado'],
+    [workflowType:SHIPMENT_ORDER, type:END_WITH_FAIL, name:'Cancelado'],
+    [workflowType:SHIPMENT_ORDER, name:'Em Transito'],
+    [workflowType:SHIPMENT_ORDER, type:END_WITH_SUCCESS, name:'Recebido OK PS'],
+    [workflowType:SHIPMENT_ORDER, type:END_WITH_FAIL, name:'Recusado no Destino'],
+    [workflowType:SHIPMENT_ORDER, name:'PRÉ-DESPACHO'],
+    [workflowType:SHIPMENT_ORDER, type:END_WITH_SUCCESS, name:'DESPACHADO GOOD'],
+    [workflowType:SHIPMENT_ORDER, type:END_WITH_SUCCESS, name:'DESPACHADO BAD'],
+    [workflowType:SHIPMENT_ORDER, type:END_WITH_SUCCESS, name:'INGRESSO GOOD'],
+    [workflowType:SHIPMENT_ORDER, type:END_WITH_SUCCESS, name:'INGRESSO BAD'],
+    [workflowType:SHIPMENT_ORDER, name:'Ingresso de Equiptos'],
+    [workflowType:SHIPMENT_ORDER, name:'Conferência no Destino'],
+    [workflowType:SHIPMENT_ORDER, name:'Gerar Nota Fiscal'],
+    [workflowType:SHIPMENT_ORDER, name:'Disponivel para Coleta']
+
+].each {
+
+    def instance = new StepStatus(status:'ENABLED', workflowType:it.workflowType, type:it.type, name:it.name).save()
+    println "${it.workflowType}: ${instance}${it.type ? " [$it.type]" : ''} (${instance.errors})"
+}
+
+// Expected
+/*
+    SERVICE_ORDER: Nova [START] (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Cancelado [END_WITH_FAIL] (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Finalizado [END_WITH_SUCCESS] (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Em Campo [WITH_TECHNICIAN] (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Encaminhado (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Pre-Finalizado [PRE_END] (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Para Aprovação (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Para Encerramento (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Cancelado (Pendente Autorização) (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Reencaminhado (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Aprovado (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Conferência no Destino (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Encaminhado Manut (grails.validation.ValidationErrors: 0 errors)
+    SERVICE_ORDER: Finalizado (Sem Troca) [END_WITH_SUCCESS] (grails.validation.ValidationErrors: 0 errors)
+    REPAIR_ORDER: RR Abierta [START] (grails.validation.ValidationErrors: 0 errors)
+    REPAIR_ORDER: Asignada (grails.validation.ValidationErrors: 0 errors)
+    REPAIR_ORDER: En Reparo (grails.validation.ValidationErrors: 0 errors)
+    REPAIR_ORDER: Reparacion OK (grails.validation.ValidationErrors: 0 errors)
+    REPAIR_ORDER: Irreparable (grails.validation.ValidationErrors: 0 errors)
+    REPAIR_ORDER: QA_Lab [QA] (grails.validation.ValidationErrors: 0 errors)
+    REPAIR_ORDER: QA Aprobado (grails.validation.ValidationErrors: 0 errors)
+    REPAIR_ORDER: QA Rechazado (grails.validation.ValidationErrors: 0 errors)
+    REPAIR_ORDER: Bodega Egreso (grails.validation.ValidationErrors: 0 errors)
+    REPAIR_ORDER: Entregado OK [END_WITH_SUCCESS] (grails.validation.ValidationErrors: 0 errors)
+    REPAIR_ORDER: Entregado NOK [END_WITH_FAIL] (grails.validation.ValidationErrors: 0 errors)
+    REPAIR_ORDER: Bodega Baja (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: Nova [START] (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: Preparação (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: Despachado [END_WITH_SUCCESS] (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: Cancelado [END_WITH_FAIL] (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: Em Transito (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: Recebido OK PS [END_WITH_SUCCESS] (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: Recusado no Destino [END_WITH_FAIL] (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: PRÉ-DESPACHO (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: DESPACHADO GOOD [END_WITH_SUCCESS] (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: DESPACHADO BAD [END_WITH_SUCCESS] (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: INGRESSO GOOD [END_WITH_SUCCESS] (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: INGRESSO BAD [END_WITH_SUCCESS] (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: Ingresso de Equiptos (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: Conferência no Destino (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: Gerar Nota Fiscal (grails.validation.ValidationErrors: 0 errors)
+    SHIPMENT_ORDER: Disponivel para Coleta (grails.validation.ValidationErrors: 0 errors)
+*/

@@ -1,0 +1,41 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+
+def itens = []
+itens << [name: "POS_DISPLAY", status: "ENABLED", type: "PART", mask: "", pattern: "", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("Display"), consumable: false, description: "DISPLAY I5100/PPT/I7910/I7310 (AFF0058)"]
+itens << [name: "POS_IMPRESORA", status: "ENABLED", type: "PART", mask: "", pattern: "", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS - Impressora"), consumable: false, description: "IMPRESORA I5100/PPT/I7910/I7310 (DIV1109)"]
+itens << [name: "Fonte ICT220", status: "ENABLED", type: "ACCESSORY", mask: "", pattern: "", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("Fonte de Alimentação"), consumable: false, description: ""]
+
+
+itens.each {
+def modelInstance = new Model()
+modelInstance.properties = it
+println modelInstance.validate()
+println modelInstance.save()
+println modelInstance.errors
+}
+
+def modelACQUA = Model.findByName("ACQUA")
+modelACQUA.addToModels(Model.findByName("ST763A"))
+println modelACQUA.save()
+println modelACQUA.models
+
+def modelICT220 = Model.findByName("ICT220")
+modelICT220.addToModels(Model.findByName("Fonte ICT220"))
+println modelICT220.save()
+println modelICT220.models
+
+// expected
+// true 
+// POS_DISPLAY 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// POS_IMPRESORA 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Fonte ICT220 
+// grails.validation.ValidationErrors: 0 errors 
+// ACQUA
+// [ST763A] 
+// ICT220 
+// [Fonte ICT220]

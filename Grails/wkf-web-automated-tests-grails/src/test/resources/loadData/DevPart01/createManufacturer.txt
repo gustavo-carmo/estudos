@@ -1,0 +1,34 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def manufacturerInstanceIngenico = new Manufacturer()
+manufacturerInstanceIngenico.name = "Ingenico"
+manufacturerInstanceIngenico.status = "ENABLED"
+println manufacturerInstanceIngenico.validate()
+println manufacturerInstanceIngenico.save()
+println manufacturerInstanceIngenico.errors
+
+def manufacturerInstanceVerifone = new Manufacturer()
+manufacturerInstanceVerifone.name = "Verifone"
+manufacturerInstanceVerifone.status = "ENABLED"
+println manufacturerInstanceVerifone.validate()
+println manufacturerInstanceVerifone.save()
+println manufacturerInstanceVerifone.errors
+
+def manufacturerInstanceSinDatos = new Manufacturer()
+manufacturerInstanceSinDatos.name = "Sin datos"
+manufacturerInstanceSinDatos.status = "ENABLED"
+println manufacturerInstanceSinDatos.validate()
+println manufacturerInstanceSinDatos.save()
+println manufacturerInstanceSinDatos.errors
+
+// expected
+// true
+// Ingenico
+// grails.validation.ValidationErrors: 0 errors"
+// true
+// Verifone
+// grails.validation.ValidationErrors: 0 errors"
+// true
+// Sin datos
+// grails.validation.ValidationErrors: 0 errors"

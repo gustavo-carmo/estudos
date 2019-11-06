@@ -1,0 +1,32 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 9"
+addressInstance.number = "1149"
+addressInstance.zipCode = "91523133"
+addressInstance.city = City.findByNameAndState("Florianópolis", State.findByName("Santa Catarina"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("BANRISUL")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "31273370000126"
+customerInstance.name = "Fábio Floripa"
+customerInstance.phoneNumber = "34959530"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 9 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Fábio Floripa - 31.273.370/0001-26
+// grails.validation.ValidationErrors: 0 errors

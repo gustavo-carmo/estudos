@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 19"
+addressInstance.number = ""
+addressInstance.district = ""
+addressInstance.zipCode = "91523133"
+addressInstance.city = City.findByNameAndState("São Simão", State.findByName("São Paulo"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("TICKET")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "66838669000165"
+customerInstance.contactName = ""
+// customerInstance.alias = ""
+customerInstance.name = "Gabriel São Simão"
+customerInstance.email = ""
+customerInstance.phoneNumber = "34959530"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 19
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Gabriel São Simão - 66.838.669/0001-65
+// grails.validation.ValidationErrors: 0 errors

@@ -1,0 +1,11 @@
+import br.com.careman.domain.*
+
+def serviceAreas = new ServiceAreas(
+		    name: "%name%")
+        	        
+	if (serviceAreas.validate()) {
+		serviceAreas.save(failOnError: true)
+    	println serviceAreas.id
+	} else {
+		println serviceAreas.errors
+	}

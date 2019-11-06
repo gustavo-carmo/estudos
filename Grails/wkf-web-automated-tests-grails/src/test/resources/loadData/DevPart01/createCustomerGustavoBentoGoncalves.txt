@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 12"
+addressInstance.number = ""
+addressInstance.district = ""
+addressInstance.zipCode = "91523133"
+addressInstance.city = City.findByNameAndState("Bento Gonçalves", State.findByName("Rio Grande do Sul"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("BANRISUL")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "02454746000109"
+customerInstance.contactName = ""
+// customerInstance.alias = ""
+customerInstance.name = "Gustavo Bento Gonçalves"
+customerInstance.email = ""
+customerInstance.phoneNumber = "34959530"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 12
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Gustavo Bento Gonçalves - 02.454.746/0001-09
+// grails.validation.ValidationErrors: 0 errors

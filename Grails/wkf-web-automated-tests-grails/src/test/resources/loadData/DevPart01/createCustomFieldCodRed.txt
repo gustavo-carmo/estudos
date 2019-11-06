@@ -1,0 +1,16 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+    
+def customFieldInstance = new CustomField(name: "Cód. Rede", status: "ENABLED", type: CustomFieldType.EQUIPMENT, kind: CustomFieldKind.REGEX, pattern: "\\d{11}")
+println customFieldInstance.validate()
+println customFieldInstance.save()
+println customFieldInstance.type
+println customFieldInstance.kind
+println customFieldInstance.pattern
+
+// expected
+// true 
+// Cód. Rede
+// EQUIPMENT
+// REGEX
+// \\d{11}

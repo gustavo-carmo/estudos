@@ -1,0 +1,12 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.OpeningHoursOptions
+import groovy.time.TimeDuration
+
+def startAt = new TimeDuration(8, 0, 0, 0)
+def endAt = new TimeDuration(18, 0, 0, 0)
+
+println new OpeningHours(dayOfWeek: OpeningHoursOptions.MONDAY, startAt: startAt, endAt: endAt).save() // expected MONDAY [8 hours - 18 hours]
+println new OpeningHours(dayOfWeek: OpeningHoursOptions.TUESDAY, startAt: startAt, endAt: endAt).save() // expected TUESDAY [8 hours - 18 hours]
+println new OpeningHours(dayOfWeek: OpeningHoursOptions.WEDNESDAY, startAt: startAt, endAt: endAt).save() // expected WEDNESDAY [8 hours - 18 hours]
+println new OpeningHours(dayOfWeek: OpeningHoursOptions.THURSDAY, startAt: startAt, endAt: endAt).save() // expected THURSDAY [8 hours - 18 hours]
+println new OpeningHours(dayOfWeek: OpeningHoursOptions.FRIDAY, startAt: startAt, endAt: endAt).save() // expected FRIDAY [8 hours - 18 hours]

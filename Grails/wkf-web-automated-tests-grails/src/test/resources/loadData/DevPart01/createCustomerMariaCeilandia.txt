@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 2"
+addressInstance.number = ""
+addressInstance.district = ""
+addressInstance.zipCode = "91520131"
+addressInstance.city = City.findByNameAndState("Ceilândia", State.findByName("Distrito Federal"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("TICKET")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "12282122000105"
+customerInstance.contactName = ""
+// customerInstance.alias = ""
+customerInstance.name = "Maria Ceilândia"
+customerInstance.email = ""
+customerInstance.phoneNumber = "91520131"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 2
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Maria Ceilândia - 12.282.122/0001-05
+// grails.validation.ValidationErrors: 0 errors

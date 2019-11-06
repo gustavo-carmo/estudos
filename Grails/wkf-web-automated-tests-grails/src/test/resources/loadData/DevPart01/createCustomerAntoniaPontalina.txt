@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 5"
+addressInstance.number = ""
+addressInstance.district = ""
+addressInstance.zipCode = "91523133"
+addressInstance.city = City.findByNameAndState("Pontalina", State.findByName("Goias"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("TICKET")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "29788521000137"
+customerInstance.contactName = ""
+// customerInstance.alias = ""
+customerInstance.name = "Antônia Pontalina"
+customerInstance.email = ""
+customerInstance.phoneNumber = "5133158563"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 5
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Antônia Pontalina - 29.788.521/0001-37
+// grails.validation.ValidationErrors: 0 errors

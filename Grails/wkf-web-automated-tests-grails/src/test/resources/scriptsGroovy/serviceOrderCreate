@@ -1,0 +1,31 @@
+import br.com.careman.domain.*
+
+def documentType = "%documentType%"
+def documentNumber = "%documentNumber%"
+def serviceName = "%serviceName%"
+    
+def customer = Customer.findByDocumentTypeAndDocumentNumber(documentType, documentNumber);
+    
+def service = ServiceOffered.findByName(serviceName)
+
+def contractorsService = ctx.getBean('contractorsService')
+
+def initialStep = contractorsService.findInitialStepStatusToService(service)
+
+def user = User.findByUsername('admin')
+
+ServiceOrder.withTransaction {
+    def serviceOrder =  new ServiceOrder(
+        customer: customer,
+        status: initialStep,
+        service: service,
+        createdByUser: user
+    )
+
+    if (serviceOrder.validate()) {
+        serviceOrder.save(failOnError: true)
+        println serviceOrder.id
+    } else {
+    	println serviceOrder.errors
+    }    
+}

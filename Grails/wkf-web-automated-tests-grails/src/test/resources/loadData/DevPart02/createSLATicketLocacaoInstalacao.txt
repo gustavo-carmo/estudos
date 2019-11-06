@@ -1,0 +1,67 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+import static br.com.careman.groovy.enums.StateRegion.*
+import static br.com.careman.groovy.enums.ServiceLevelAgreementCriterion.*
+import static br.com.careman.groovy.enums.ServiceLevelAgreementDistanceFromCapitalType.*
+
+def SLAGroupInstance = new ServiceLevelAgreementGroup(status:'ENABLED', name:'SLA Ticket (Locação e Instalação)')
+[
+ [region: MIDWEST,   distanceFromCapital: [type: UNTIL,        value: 300], term:13, spTerm:11],
+ [region: MIDWEST,   distanceFromCapital: [type: GREATER_THAN, value: 300], term:16, spTerm:14],
+
+ [region: NORTHEAST, distanceFromCapital: [type: UNTIL,        value: 50],  term:9,  spTerm:7],
+ [region: NORTHEAST, distanceFromCapital: [type: UNTIL,        value: 150], term:11, spTerm:9],
+ [region: NORTHEAST, distanceFromCapital: [type: UNTIL,        value: 300], term:13, spTerm:11],
+ [region: NORTHEAST, distanceFromCapital: [type: GREATER_THAN, value: 300], term:16, spTerm:14],
+
+ [region: NORTH,     distanceFromCapital: [type: UNTIL,        value: 50],  term:10, spTerm:8],
+ [region: NORTH,     distanceFromCapital: [type: UNTIL,        value: 150], term:12, spTerm:10],
+ [region: NORTH,     distanceFromCapital: [type: UNTIL,        value: 300], term:14, spTerm:12],
+ [region: NORTH,     distanceFromCapital: [type: GREATER_THAN, value: 300], term:17, spTerm:15],
+
+ [region: SOUTHEAST, distanceFromCapital: [type: UNTIL,        value: 50],  term:8,  spTerm:6],
+ [region: SOUTHEAST, distanceFromCapital: [type: UNTIL,        value: 150], term:10, spTerm:8],
+ [region: SOUTHEAST, distanceFromCapital: [type: UNTIL,        value: 300], term:12, spTerm:10],
+ [region: SOUTHEAST, distanceFromCapital: [type: GREATER_THAN, value: 300], term:15, spTerm:13],
+
+ [region: SOUTH,     distanceFromCapital: [type: UNTIL,        value: 50],  term:9,  spTerm:7],
+ [region: SOUTH,     distanceFromCapital: [type: UNTIL,        value: 150], term:11, spTerm:9],
+ [region: SOUTH,     distanceFromCapital: [type: UNTIL,        value: 300], term:13, spTerm:11],
+ [region: SOUTH,     distanceFromCapital: [type: GREATER_THAN, value: 300], term:16, spTerm:14]
+
+].each {
+
+    SLAGroupInstance.addToSla(ServiceLevelAgreement.build(criterion: REGION,
+                                                             region: it.region,
+                                                distanceFromCapital: it.distanceFromCapital,
+                                                               term: [value: it.term, type: ServiceLevelAgreementTermType.DAYS, detail: ServiceLevelAgreementTermTypeDetail.WORKING_DAY],
+                                                serviceProviderTerm: [value: it.spTerm]))
+}
+
+SLAGroupInstance.save()
+println "${SLAGroupInstance} (${SLAGroupInstance.errors})"
+println SLAGroupInstance.sla.collect{"${it.toString()} (${it.errors})"}.sort().join('\n')
+
+// Expected
+
+/*
+    SLA Ticket (Locação e Instalação) (grails.validation.ValidationErrors: 0 errors)
+    REGION MIDWEST (GREATER_THAN 300 km): 16 WORKING_DAY, SP: 14 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION MIDWEST (UNTIL 300 km): 13 WORKING_DAY, SP: 11 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION NORTH (GREATER_THAN 300 km): 17 WORKING_DAY, SP: 15 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION NORTH (UNTIL 150 km): 12 WORKING_DAY, SP: 10 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION NORTH (UNTIL 300 km): 14 WORKING_DAY, SP: 12 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION NORTH (UNTIL 50 km): 10 WORKING_DAY, SP: 8 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION NORTHEAST (GREATER_THAN 300 km): 16 WORKING_DAY, SP: 14 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION NORTHEAST (UNTIL 150 km): 11 WORKING_DAY, SP: 9 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION NORTHEAST (UNTIL 300 km): 13 WORKING_DAY, SP: 11 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION NORTHEAST (UNTIL 50 km): 9 WORKING_DAY, SP: 7 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION SOUTH (GREATER_THAN 300 km): 16 WORKING_DAY, SP: 14 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION SOUTH (UNTIL 150 km): 11 WORKING_DAY, SP: 9 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION SOUTH (UNTIL 300 km): 13 WORKING_DAY, SP: 11 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION SOUTH (UNTIL 50 km): 9 WORKING_DAY, SP: 7 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION SOUTHEAST (GREATER_THAN 300 km): 15 WORKING_DAY, SP: 13 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION SOUTHEAST (UNTIL 150 km): 10 WORKING_DAY, SP: 8 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION SOUTHEAST (UNTIL 300 km): 12 WORKING_DAY, SP: 10 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    REGION SOUTHEAST (UNTIL 50 km): 8 WORKING_DAY, SP: 6 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+*/

@@ -1,0 +1,3 @@
+import br.com.careman.domain.*
+
+	println new Solution(status: 'ENABLED', name: "%name%", changeEquipment: "%changeEquipment%").save(failOnError: true, flush: true)

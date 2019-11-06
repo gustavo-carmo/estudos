@@ -1,0 +1,16 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+import static br.com.careman.groovy.enums.WorkflowType.*
+import static br.com.careman.groovy.enums.StepStatusType.*
+
+def profileSettings = ProfileSettings.findByProfile(Profile.%profile%)
+
+        def list = [
+			%status%
+        ]
+
+        list.each {
+            profileSettings.addToStatus(new ProfileStatus(status: it.status, edit: it.edit))
+        }
+
+        profileSettings.save(failOnError: true, flush: true)

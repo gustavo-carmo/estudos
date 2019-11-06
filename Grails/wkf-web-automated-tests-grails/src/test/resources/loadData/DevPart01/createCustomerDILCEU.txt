@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA PEDRO SOUZA"
+addressInstance.number = "248"
+addressInstance.district = "JOAO PESSOA"
+addressInstance.zipCode = "91520130"
+addressInstance.city = City.findByNameAndState("Porto Alegre", State.findByName("Rio Grande do Sul"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("BANRISUL")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "91728196000190"
+customerInstance.contactName = "DILCEU"
+customerInstance.alias = "DILCEU JOSE COSTANTIN ME"
+customerInstance.name = "DILCEU JOSE COSTANTIN ME"
+customerInstance.email = "teste@tefti.com.br"
+customerInstance.phoneNumber = "5133158567"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA PEDRO SOUZA
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// DILCEU JOSE COSTANTIN ME - 91.728.196/0001-90 
+// grails.validation.ValidationErrors: 0 errors

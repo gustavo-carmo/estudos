@@ -1,0 +1,3 @@
+import br.com.careman.domain.*
+
+	Solution.findByName("%name%").delete(failOnError: true)

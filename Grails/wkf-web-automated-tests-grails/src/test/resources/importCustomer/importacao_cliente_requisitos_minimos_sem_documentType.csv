@@ -1,0 +1,2 @@
+contractorAlias,name,alias,documentType,documentNumber,phoneNumber,status,address,zipCode,stateName,cityName
+CONTRACTOR_GENERIC,Import_Consumer_Without_documentType,Import_Consumer_Without_documentType,,30295763000178,1196311547,ENABLED,Av. Teste,45119654,Rio de Janeiro,Rio de Janeiro

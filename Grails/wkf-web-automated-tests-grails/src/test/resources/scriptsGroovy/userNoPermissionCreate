@@ -1,0 +1,11 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+
+println new User(
+    username: "%username%",
+    password: "%password%",
+    name: "%username%",
+    email: "%username%@testes.com",
+    language: Language.findByLocale("%language%"),
+    profile: Profile.ADMINISTRATOR,
+).save(failOnError: true, flush: true)

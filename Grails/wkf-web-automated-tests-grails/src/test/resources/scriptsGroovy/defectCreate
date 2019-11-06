@@ -1,0 +1,13 @@
+import br.com.careman.domain.*
+
+def defect = new Defect(
+		    name: "%name%", 
+        	status: "ENABLED",
+        	family: Family.findByName("%family%"))
+        	        
+	if (defect.validate()) {
+		defect.save(failOnError: true)
+    	println defect.id
+	} else {
+		println defect.errors
+	}  

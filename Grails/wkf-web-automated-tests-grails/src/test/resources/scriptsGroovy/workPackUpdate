@@ -1,0 +1,9 @@
+import br.com.careman.domain.*
+import groovy.time.TimeCategory
+
+def workPackInstance = WorkPack.get(%id%)
+use(TimeCategory) {
+    workPackInstance.deliveredDate = workPackInstance.deliveredDate - 16.minute
+}
+
+workPackInstance.save(failOnError: true, flush: true)

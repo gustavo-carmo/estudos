@@ -1,0 +1,2 @@
+serialNumber,status,situation,contractor_alias,model_name,warranty_provider_name,warranty_type,warranty_created_date,warranty_date_end
+33333333330,ENABLED,GOOD,CONTRACTOR_GENERIC,MODEL_GENERIC_PART,INEXISTENTE_FORNECEDOR_GARANTIA,MANUFACTURER,2016-10-12,2016-10-22

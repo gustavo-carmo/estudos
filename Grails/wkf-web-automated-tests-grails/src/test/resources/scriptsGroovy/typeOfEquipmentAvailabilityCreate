@@ -1,0 +1,6 @@
+import br.com.careman.domain.*
+
+	new TypeOfEquipmentAvailability(
+		name: "%name%",
+        code: "%code%"
+	).save(failOnError: true, flush: true)

@@ -1,0 +1,53 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "Avenida Corrientes"
+addressInstance.number = "1020"
+addressInstance.complement = ""
+addressInstance.district = "Centro"
+addressInstance.zipCode = "C1253ACD"
+addressInstance.city = City.findByNameAndState("Buenos Aires", State.findByName("Buenos Aires"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def serviceProvider = new ServiceProvider(address: addressInstance)
+serviceProvider.hq = false
+serviceProvider.headquarters = ServiceProvider.findByAlias("Smart")
+serviceProvider.documentType = "CNPJ"
+serviceProvider.documentNumber = "54583675000130"
+serviceProvider.alias = "Smartf1"
+serviceProvider.contactName = "Smartf1"
+serviceProvider.status = "ENABLED"
+serviceProvider.name = "Smart"
+serviceProvider.email = "info@smartf1.com.ar"
+serviceProvider.phoneNumber = "541156335568"
+serviceProvider.type = "FIELD"
+serviceProvider.hasOwnStock = true
+
+println serviceProvider.validate()
+println serviceProvider.save()
+println serviceProvider.errors
+
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Reparacion en Laboratorio"))
+
+serviceProvider.addToContractors(Contractor.findByAlias("POSNET"))
+serviceProvider.addToContractors(Contractor.findByAlias("CABAL"))
+serviceProvider.addToContractors(Contractor.findByAlias("TICKET"))
+
+println serviceProvider.validate()
+println serviceProvider.save()
+println serviceProvider.errors
+
+// expected
+// true 
+// Avenida Corrientes
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Smartf1 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Smartf1 
+// grails.validation.ValidationErrors: 0 errors

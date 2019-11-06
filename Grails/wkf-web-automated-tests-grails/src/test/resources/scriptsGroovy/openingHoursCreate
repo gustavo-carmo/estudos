@@ -1,0 +1,20 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.OpeningHoursOptions
+import br.com.careman.groovy.mapping.TimeDurationUserType
+import groovy.time.TimeDuration
+
+def openingHoursInstance = OpeningHours.findByDayOfWeekAndStartAtAndEndAt(
+    OpeningHoursOptions.%day%,
+    new TimeDuration (%startAt%, 0, 0, 0),
+    new TimeDuration (%endAt%, 0, 0, 0)
+)
+
+if(openingHoursInstance == null) {
+	println new OpeningHours(
+		dayOfWeek: OpeningHoursOptions.%day%,
+		startAt: new TimeDuration (%startAt%, 0, 0, 0),
+		endAt: new TimeDuration (%endAt%, 0, 0, 0)
+	).save(failOnError: true, flush: true)
+} else {
+    println openingHoursInstance
+}

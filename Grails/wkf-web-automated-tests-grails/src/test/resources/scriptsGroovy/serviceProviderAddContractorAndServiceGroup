@@ -1,0 +1,9 @@
+import br.com.careman.domain.*
+    
+ServiceProvider serviceProvider = ServiceProvider.findByName("%serviceProvider%")
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("%serviceGroup%"))
+serviceProvider.addToContractors(Contractor.findByAlias("%contractor%"))
+serviceProvider.addToServiceAreas(ServiceAreas.findByName("%serviceAreas%"))
+serviceProvider.hq = true    
+
+serviceProvider.save(failOnError: true, flush: true)

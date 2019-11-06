@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 6"
+addressInstance.number = ""
+addressInstance.district = ""
+addressInstance.zipCode = "91523133"
+addressInstance.city = City.findByNameAndState("Bonito", State.findByName("Mato Grosso do Sul"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("TICKET")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "28454484000168"
+customerInstance.contactName = ""
+// customerInstance.alias = ""
+customerInstance.name = "Maura Bonito"
+customerInstance.email = ""
+customerInstance.phoneNumber = "43214321"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 6
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Maura Bonito - 28.454.484/0001-68
+// grails.validation.ValidationErrors: 0 errors

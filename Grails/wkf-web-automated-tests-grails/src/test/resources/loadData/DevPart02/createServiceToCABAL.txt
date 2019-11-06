@@ -1,0 +1,50 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.WorkflowType
+
+def contractors = [:]
+Contractor.where{alias in ['CABAL'] && status == 'ENABLED'}.each{
+    contractors[it.alias] = [contract:it.contract]
+}
+
+def serviceGroups = [:]
+ServiceGroup.where{status == 'ENABLED'}.each{
+    serviceGroups[it.name] = it
+}
+
+def workflows = [:]
+WorkflowType.values().each {
+    workflows[(it)] = [:]
+}
+Workflow.where{status == 'ENABLED'}.each{
+    workflows[it.workflowType][it.name] = it
+}
+
+[
+    [contractor:'CABAL', services: [
+        [
+            group:'Reparacion en Laboratorio',
+            workflow:'Workflow Laboratório',
+            name:'Reparacion en Laboratorio'
+        ]
+    ]]
+
+].each {
+
+    def contractInstance = contractors[it.contractor].contract
+    it.services.each { service ->
+
+        def serviceGroupInstance = serviceGroups[service.group]
+        def workflowInstance = workflows[serviceGroupInstance.workflowType][service.workflow]
+        def serviceInstance = new ServiceOffered(status: 'ENABLED',
+                                            name: service.name,
+                                        contract: contractInstance,
+                                    serviceGroup: serviceGroupInstance,
+                                        workflow: workflowInstance)
+        serviceInstance.save()
+        println "${serviceInstance} (${serviceInstance.errors})"
+    }
+}
+
+/*
+    Reparacion en Laboratorio (grails.validation.ValidationErrors: 0 errors)
+*/

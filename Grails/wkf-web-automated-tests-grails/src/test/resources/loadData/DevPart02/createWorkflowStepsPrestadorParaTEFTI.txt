@@ -1,0 +1,125 @@
+import br.com.careman.domain.*
+import static br.com.careman.groovy.enums.StepStatusType.*
+import static br.com.careman.groovy.enums.WorkflowType.*
+import static br.com.careman.groovy.enums.StepRuleType.*
+
+def stepStatuses = [:]
+StepStatus.where{workflowType == SHIPMENT_ORDER && status == 'ENABLED'}.each{
+    stepStatuses[it.name] = it
+}
+
+def stepRules = [:]
+StepRule.where{workflowType == SHIPMENT_ORDER && enabled}.each{
+    stepRules[it.id] = it
+}
+
+def validations = [
+    'rule_Carrier':41l,
+    'rule_Invoice_Number':42l,
+    'rule_Invoice_Date':43l,
+    'rule_Outbound_Date':44l,
+    'rule_Weight':45l,
+    'rule_Only_BAD_Equipments':46l,
+    'rule_Only_GOOD_Equipments':47l
+]
+
+def triggers = [
+    'rule_Set_Equipments_situation_to_BAD':48l,
+    'rule_Set_Equipments_situation_to_GOOD':49l,
+    'rule_Turn_Equipments_as_Inventoried':50l
+]
+
+def customTriggers = [
+    'updateEquipmentLocation':51l,
+    'addWarranty':52l
+]
+
+[
+    [type:SHIPMENT_ORDER, name:'Remessa Prestador para TEFTI', steps: [
+        [from:'Nova', to:'Ingresso de Equiptos'],
+        [from:'Ingresso de Equiptos', to:'Gerar Nota Fiscal'],
+        [from:'Gerar Nota Fiscal', to:'Cancelado'],
+        [from:'Gerar Nota Fiscal', to:'Em Transito', rules:[
+            validations['rule_Carrier'],
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number'],
+            validations['rule_Outbound_Date'],
+            validations['rule_Weight']
+        ]],
+        [from:'Em Transito', to:'Cancelado'],
+        [from:'Em Transito', to:'Conferência no Destino', rules:[
+            validations['rule_Carrier'],
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number'],
+            validations['rule_Outbound_Date'],
+            validations['rule_Weight']
+        ]],
+        [from:'Conferência no Destino', to:'Recusado no Destino', rules:[
+            validations['rule_Carrier'],
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number'],
+            validations['rule_Outbound_Date'],
+            validations['rule_Weight']
+        ]],
+        [from:'Conferência no Destino', to:'Recebido OK PS', rules:[
+            validations['rule_Carrier'],
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number'],
+            validations['rule_Outbound_Date'],
+            validations['rule_Weight']
+        ]]
+    ]]
+
+].each {
+
+    def workflowInstance = new Workflow(status:'ENABLED', workflowType:it.type, name:it.name)
+    it.steps.each { step ->
+        workflowInstance.addToSteps(new Step(status: 'ENABLED',
+                                               from: stepStatuses[step.from],
+                                                 to: stepStatuses[step.to],
+                                              rules: step.rules.collect{stepRules[it]}))
+    }
+    workflowInstance.save()
+    def printRules = { rules ->
+        if(rules) {
+            return "\n${rules.collect{"${it.identifier} (${it.errors})"}.sort().join('\n')}"
+        }
+        ''
+    }
+    def printStep = { step ->
+        "${step.toString()} (${step.errors})${printRules(step.rules)}"
+    }
+    println "${workflowInstance} (${workflowInstance.errors})"
+    println workflowInstance.steps.collect{printStep(it)}.sort().join('\n')
+}
+/*
+    Remessa Prestador para TEFTI (grails.validation.ValidationErrors: 0 errors)
+    Conferência no Destino -> Recebido OK PS (grails.validation.ValidationErrors: 0 errors)
+    rule_Carrier (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Outbound_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Weight (grails.validation.ValidationErrors: 0 errors)
+    Conferência no Destino -> Recusado no Destino (grails.validation.ValidationErrors: 0 errors)
+    rule_Carrier (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Outbound_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Weight (grails.validation.ValidationErrors: 0 errors)
+    Em Transito -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    Em Transito -> Conferência no Destino (grails.validation.ValidationErrors: 0 errors)
+    rule_Carrier (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Outbound_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Weight (grails.validation.ValidationErrors: 0 errors)
+    Gerar Nota Fiscal -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    Gerar Nota Fiscal -> Em Transito (grails.validation.ValidationErrors: 0 errors)
+    rule_Carrier (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Outbound_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Weight (grails.validation.ValidationErrors: 0 errors)
+    Ingresso de Equiptos -> Gerar Nota Fiscal (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Ingresso de Equiptos (grails.validation.ValidationErrors: 0 errors)
+*/

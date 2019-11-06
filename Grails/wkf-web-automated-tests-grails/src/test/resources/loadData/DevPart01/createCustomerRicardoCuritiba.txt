@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 10"
+addressInstance.number = ""
+addressInstance.district = ""
+addressInstance.zipCode = "91523133"
+addressInstance.city = City.findByNameAndState("Curitiba", State.findByName("Paraná"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("BANRISUL")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "91628557000127"
+customerInstance.contactName = ""
+// customerInstance.alias = ""
+customerInstance.name = "Ricardo Curitiba"
+customerInstance.email = ""
+customerInstance.phoneNumber = "34959530"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 10
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Ricardo Curitiba - 91.628.557/0001-27
+// grails.validation.ValidationErrors: 0 errors

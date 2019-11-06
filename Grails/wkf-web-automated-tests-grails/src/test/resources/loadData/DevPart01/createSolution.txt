@@ -1,0 +1,26 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+
+def solutionInstance01 = new Solution()
+solutionInstance01.status = "ENABLED"
+solutionInstance01.name = "TROCA DE TERMINAL"
+solutionInstance01.changeEquipment = true
+println solutionInstance01.validate()
+println solutionInstance01.save()
+println solutionInstance01.errors
+
+def solutionInstance02 = new Solution()
+solutionInstance02.status = "ENABLED"
+solutionInstance02.name = "CONFIGURACAO DO TERMINAL"
+solutionInstance02.changeEquipment = false
+println solutionInstance02.validate()
+println solutionInstance02.save()
+println solutionInstance02.errors
+
+def solutionInstance03 = new Solution()
+solutionInstance03.status = "ENABLED"
+solutionInstance03.name = "Trocar Fonte"
+solutionInstance03.changeEquipment = false
+println solutionInstance03.validate()
+println solutionInstance03.save()
+println solutionInstance03.errors

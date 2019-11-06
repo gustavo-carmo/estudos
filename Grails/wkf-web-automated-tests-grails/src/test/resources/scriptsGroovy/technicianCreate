@@ -1,0 +1,22 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+
+def user = new User(
+    username: "%name%",
+    password: "%password%",
+    name: "%name%",
+    email: "%name%@testes.com",
+    language: Language.findByLocale("pt_BR"),
+	serviceProvider: ServiceProvider.findByName("%serviceProvider%"),
+    profile: Profile."%technicianType%",
+).save(failOnError: true, flush: true)
+
+def roleList = [%roles%]
+    
+if(!user.hasErrors()) {
+    roleList.each { role ->
+        UserRole.create(user, Role.findByAuthority(role), true)
+    }
+}
+
+user

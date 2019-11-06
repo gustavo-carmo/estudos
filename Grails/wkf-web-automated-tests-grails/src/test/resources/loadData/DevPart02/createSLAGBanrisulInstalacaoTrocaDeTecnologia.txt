@@ -1,0 +1,61 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+import br.com.careman.groovy.enums.*
+import static br.com.careman.groovy.enums.StateRegion.*
+import static br.com.careman.groovy.enums.ServiceLevelAgreementTermType.*
+import static br.com.careman.groovy.enums.ServiceLevelAgreementCriterion.*
+import static br.com.careman.groovy.enums.ServiceLevelAgreementTermTypeDetail.*
+import static br.com.careman.groovy.enums.ServiceLevelAgreementDistanceFromCapitalType.*
+
+def rioGrandeDoSul = State.findWhere(name:'Rio Grande do Sul')
+def rioGrandeDoSulCities = City.findAll{name in ['Alvorada',
+                                               'Canoas',
+                                               'Caxias do Sul',
+                                               'Gravataí',
+                                               'Novo Hamburgo',
+                                               'Passo Fundo',
+                                               'Pelotas',
+                                               'Rio Grande',
+                                               'Santa Cruz do Sul',
+                                               'Santa Margarida do Sul',
+                                               'Santo Ângelo',
+                                               'São Leopoldo',
+                                               'Viamão'] && state == rioGrandeDoSul}
+[
+    [name: 'SLA Banrisul (Instalação e Troca de Tecnologia)',  slas:[
+        [criterion: CAPITAL,      term:[value: 15, type: DAYS, detail: CONSECUTIVE_DAYS]],
+        [criterion: COUNTRY_TOWN, term:[value: 15, type: DAYS, detail: CONSECUTIVE_DAYS], spTerm:[value: 13]]
+    ]],
+
+    [name: 'SLA Banrisul (Demais Serviços)',  slas:[
+        [criterion: CAPITAL,            term:[value: 4,  type: HOUR]],
+        [criterion: COUNTRY_TOWN,       term:[value: 24, type: HOUR], spTerm:[value: 20]],
+        [criterion: STATE_AND_OR_CITY, state: rioGrandeDoSul, cities: rioGrandeDoSulCities, term:[value: 12, type: HOUR], spTerm:[value: 10]]
+    ]]
+
+].each {
+    def SLAGroupInstance = new ServiceLevelAgreementGroup(status:'ENABLED', name:it.name)
+
+    it.slas.each { sla ->
+        SLAGroupInstance.addToSla(ServiceLevelAgreement.build(criterion: sla.criterion,
+                                                                   term: sla.term,
+                                                                  state: sla.state,
+                                                                 cities: sla.cities,
+                                                    serviceProviderTerm: sla.spTerm))
+    }
+
+    SLAGroupInstance.save()
+    println "${SLAGroupInstance} (${SLAGroupInstance.errors})"
+    println SLAGroupInstance.sla.collect{"${it.toString()} (${it.errors})"}.sort().join('\n')
+}
+
+// Expected
+/*
+    SLA Banrisul (Instalação e Troca de Tecnologia) (grails.validation.ValidationErrors: 0 errors)
+    CAPITAL: 15 CONSECUTIVE_DAYS, SP: 15 CONSECUTIVE_DAYS (grails.validation.ValidationErrors: 0 errors)
+    COUNTRY_TOWN: 15 CONSECUTIVE_DAYS, SP: 13 CONSECUTIVE_DAYS (grails.validation.ValidationErrors: 0 errors)
+    SLA Banrisul (Demais Serviços) (grails.validation.ValidationErrors: 0 errors)
+    CAPITAL: 4 HOUR, SP: 4 HOUR (grails.validation.ValidationErrors: 0 errors)
+    COUNTRY_TOWN: 24 HOUR, SP: 20 HOUR (grails.validation.ValidationErrors: 0 errors)
+    STATE_AND_OR_CITY (RS, Alvorada, ...): 12 HOUR, SP: 10 HOUR (grails.validation.ValidationErrors: 0 errors)
+*/

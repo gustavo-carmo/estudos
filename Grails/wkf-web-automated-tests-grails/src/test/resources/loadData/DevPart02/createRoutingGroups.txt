@@ -1,0 +1,16 @@
+import br.com.careman.domain.*
+
+['A', 'B', 'C', 'D', 'E', 'F'].each {
+    def instance = new RoutingGroup(name:"Grupo de Roteirização ${it}1").save()
+    println "${instance} (${instance.errors})"
+}
+
+// Expected
+/*
+    Grupo de Roteirização A1 (grails.validation.ValidationErrors: 0 errors)
+    Grupo de Roteirização B1 (grails.validation.ValidationErrors: 0 errors)
+    Grupo de Roteirização C1 (grails.validation.ValidationErrors: 0 errors)
+    Grupo de Roteirização D1 (grails.validation.ValidationErrors: 0 errors)
+    Grupo de Roteirização E1 (grails.validation.ValidationErrors: 0 errors)
+    Grupo de Roteirização F1 (grails.validation.ValidationErrors: 0 errors)
+*/

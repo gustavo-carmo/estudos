@@ -1,0 +1,2 @@
+contractorAlias,name,alias,documentType,documentNumber,phoneNumber,status,address,zipCode,stateName,cityName
+CONTRACTOR_GENERIC,Import_Consumer_stateName_Invalid,Import_Consumer_stateName_Invalid,CNPJ,86745158000106,1116328547,ENABLED,Av. Teste,99989654,Palmas,Rio de Janeiro

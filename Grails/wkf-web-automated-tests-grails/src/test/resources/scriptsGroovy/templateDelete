@@ -1,0 +1,3 @@
+import br.com.careman.domain.Template
+
+	Template.findByName("%name%").delete(failOnError: true, flush: true)

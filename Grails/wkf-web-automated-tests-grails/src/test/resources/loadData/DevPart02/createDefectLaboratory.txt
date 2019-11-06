@@ -1,0 +1,26 @@
+import br.com.careman.domain.*
+
+def familyInstance = Family.findWhere(name:'POS')
+[
+    [name:'Carcaza Rota',          solutions:['Repara Carcaza']],
+    [name:'Display Defectuoso',    solutions:['Cambia Display']],
+    [name:'Impresora Imprime Mal', solutions:['Cambia Impresora']],
+].each {
+    def defectInstance = new DefectLaboratory(status:'ENABLED', family:familyInstance, name:it.name)
+    it.solutions.each { solution ->
+        defectInstance.addToSolutions(SolutionLaboratory.findWhere(name:solution))
+    }
+    defectInstance.save()
+    println "${defectInstance} (${defectInstance.errors})"
+    println defectInstance.solutions.collect{"${it.toString()} (${it.errors})"}.sort().join('\n')
+}
+
+// Expected
+/*
+    Carcaza Rota (grails.validation.ValidationErrors: 0 errors)
+    Repara Carcaza (grails.validation.ValidationErrors: 0 errors)
+    Display Defectuoso (grails.validation.ValidationErrors: 0 errors)
+    Cambia Display (grails.validation.ValidationErrors: 0 errors)
+    Impresora Imprime Mal (grails.validation.ValidationErrors: 0 errors)
+    Cambia Impresora (grails.validation.ValidationErrors: 0 errors)
+*/

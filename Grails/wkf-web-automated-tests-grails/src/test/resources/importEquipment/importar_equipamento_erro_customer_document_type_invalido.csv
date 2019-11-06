@@ -1,0 +1,2 @@
+serialNumber,status,situation,contractor_alias,model_name,warranty_provider_name,warranty_type,warranty_created_date,warranty_date_end,customer_document_type,customer_document_number
+55555555555,ENABLED,GOOD,CONTRACTOR_GENERIC,MODEL_GENERIC_PART,WARRANTY_PROVIDER_GENERIC,MANUFACTURER,2016-11-15,2016-11-25,RG,86888825000100

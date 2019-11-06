@@ -1,0 +1,12 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+import static br.com.careman.groovy.enums.TemplateContentType.*
+import static br.com.careman.groovy.enums.TemplateTypes.*
+
+new Template(
+    name: "%name%",
+    type: TemplateTypes.SERVICE_ORDER,
+    status: "%status%",
+    mimeType: TemplateContentType.%type%,
+	layout: "%name%"
+).save(failOnError: true, flush: true)

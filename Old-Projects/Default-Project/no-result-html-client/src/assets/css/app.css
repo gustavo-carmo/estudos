@@ -1,0 +1,76 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+header{
+  background: white;
+}
+body {
+  /*padding-top: 30px;*/
+  margin-bottom: 60px;
+  min-height: 100%;
+  /*background-color: #e7e7e7;*/
+}
+
+
+#app {
+  height: 100%;
+  min-height: 100%;
+}
+
+header a.navbar-brand {
+  /*padding-left: 60px;*/
+  padding-right: 60px;
+  width: 400px;
+  /*color: #000000;*/
+  /*background: url("../img/icon-chat.gif") no-repeat 0 10px;*/
+  font-weight: 300;
+}
+
+main {
+  padding-bottom: 75px;
+  margin-bottom: 75px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 20px;
+  min-height: 30px;
+  background: #232323;
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 300;
+}
+
+footer .text-muted {
+  margin: 20px 0;
+}
+
+td {
+  font-weight: 300;
+}
+
+label {
+  font-weight: 300;
+}
+
+option {
+  /*font-size: 14px;*/
+  font-weight: 300;
+}
+
+/* Colormaq */
+/*header a.navbar-brand {
+  width: 400px;
+  background: url("../img/logo-colormaq.png") no-repeat 0 10px;
+  text-indent: -9999px;
+}
+
+.footer {
+  background-color: #072A66;
+  color: #ddd;
+}*/

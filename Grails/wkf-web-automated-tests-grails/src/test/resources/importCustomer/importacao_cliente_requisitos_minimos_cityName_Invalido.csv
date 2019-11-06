@@ -1,0 +1,2 @@
+contractorAlias,name,alias,documentType,documentNumber,phoneNumber,status,address,zipCode,stateName,cityName
+CONTRACTOR_GENERIC,Import_Consumer_cityName_Invalid,Import_Consumer_cityName_Invalid,CNPJ,41658453000197,1196858547,ENABLED,Av. Teste,47789654,Rio de Janeiro,Belo Horizonte

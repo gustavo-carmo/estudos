@@ -1,0 +1,11 @@
+import br.com.careman.domain.*
+
+def openingHoursGroupInstance = new OpeningHoursGroup(name: "MON-FRI 08h/18h", openingHours: OpeningHours.list())
+println openingHoursGroupInstance.validate()
+println openingHoursGroupInstance.save()
+println openingHoursGroupInstance.openingHours.collect{String.valueOf(it)}.sort().join(", ")
+
+// expected
+// true 
+// MON-FRI 08h/18h 
+// FRIDAY [8 hours - 18 hours], MONDAY [8 hours - 18 hours], THURSDAY [8 hours - 18 hours], TUESDAY [8 hours - 18 hours], WEDNESDAY [8 hours - 18 hours]

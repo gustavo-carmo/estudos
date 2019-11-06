@@ -1,0 +1,101 @@
+import br.com.careman.domain.*
+import static br.com.careman.groovy.enums.StepStatusType.*
+import static br.com.careman.groovy.enums.WorkflowType.*
+import static br.com.careman.groovy.enums.StepRuleType.*
+
+def stepStatuses = [:]
+StepStatus.where{workflowType == REPAIR_ORDER && status == 'ENABLED'}.each{
+    stepStatuses[it.name] = it
+}
+
+def stepRules = [:]
+StepRule.where{workflowType == REPAIR_ORDER && enabled}.each{
+    stepRules[it.id] = it
+}
+
+def validations = [
+    'rule_Technician':32l,
+    'rule_Defects':33l,
+    'rule_At_least_one_Activity':34l,
+    'rule_Repair_Level':35l,
+    'rule_All_Quality_Evaluation_must_be_Approved':36l,
+    'rule_At_least_one_Quality_Evaluation_must_be_Reproved':37l
+]
+
+def triggers = [
+    'rule_Convert_Equipment_to_Situation_GOOD':38l,
+    'rule_Convert_Equipment_to_Situation_IRREPARABLE':39l
+]
+
+def customTriggers = [
+    'updateEquipmentLocation':40l
+]
+
+[
+    [type:REPAIR_ORDER, name:'Workflow Laboratório', steps: [
+        [from:'RR Abierta', to:'Asignada'],
+        [from:'Asignada', to:'En Reparo', rules:[
+            validations['rule_Technician']
+        ]],
+        [from:'En Reparo', to:'Reparacion OK'],
+        [from:'En Reparo', to:'Irreparable', rules:[
+            triggers['rule_Convert_Equipment_to_Situation_IRREPARABLE']
+        ]],
+        [from:'Irreparable', to:'Bodega Baja'],
+        [from:'Reparacion OK', to:'QA_Lab'],
+        [from:'QA_Lab', to:'QA Aprobado', rules:[
+            validations['rule_All_Quality_Evaluation_must_be_Approved']
+        ]],
+        [from:'QA_Lab', to:'QA Rechazado', rules:[
+            validations['rule_At_least_one_Quality_Evaluation_must_be_Reproved']
+        ]],
+        [from:'QA Aprobado', to:'Bodega Egreso'],
+        [from:'QA Rechazado', to:'En Reparo'],
+        [from:'Bodega Egreso', to:'Entregado OK', rules:[
+            triggers['rule_Convert_Equipment_to_Situation_GOOD']
+        ]],
+        [from:'Bodega Baja', to:'Entregado NOK']
+    ]]
+
+].each {
+    def workflowInstance = new Workflow(status:'ENABLED', workflowType:it.type, name:it.name)
+    it.steps.each { step ->
+        workflowInstance.addToSteps(new Step(status: 'ENABLED',
+                                               from: stepStatuses[step.from],
+                                                 to: stepStatuses[step.to],
+                                              rules: step.rules.collect{stepRules[it]}))
+    }
+    workflowInstance.save()
+    def printRules = { step ->
+        if(step.rules) {
+            return "\n${step.rules?.collect{"${it.identifier} (${it.errors})"}?.sort()?.join('\n')}"
+        }
+        ''
+    }
+    def printStep = { step ->
+        "${"${step.toString()} (${step.errors})"}${printRules(step)}"
+    }
+    println "${workflowInstance} (${workflowInstance.errors})"
+    println workflowInstance.steps.collect{printStep(it)}.sort().join('\n')
+}
+
+/*
+    Workflow Laboratório (grails.validation.ValidationErrors: 0 errors)
+    Asignada -> En Reparo (grails.validation.ValidationErrors: 0 errors)
+    rule_Technician (grails.validation.ValidationErrors: 0 errors)
+    Bodega Baja -> Entregado NOK (grails.validation.ValidationErrors: 0 errors)
+    Bodega Egreso -> Entregado OK (grails.validation.ValidationErrors: 0 errors)
+    rule_Convert_Equipment_to_Situation_GOOD (grails.validation.ValidationErrors: 0 errors)
+    En Reparo -> Irreparable (grails.validation.ValidationErrors: 0 errors)
+    rule_Convert_Equipment_to_Situation_IRREPARABLE (grails.validation.ValidationErrors: 0 errors)
+    En Reparo -> Reparacion OK (grails.validation.ValidationErrors: 0 errors)
+    Irreparable -> Bodega Baja (grails.validation.ValidationErrors: 0 errors)
+    QA Aprobado -> Bodega Egreso (grails.validation.ValidationErrors: 0 errors)
+    QA Rechazado -> En Reparo (grails.validation.ValidationErrors: 0 errors)
+    QA_Lab -> QA Aprobado (grails.validation.ValidationErrors: 0 errors)
+    rule_All_Quality_Evaluation_must_be_Approved (grails.validation.ValidationErrors: 0 errors)
+    QA_Lab -> QA Rechazado (grails.validation.ValidationErrors: 0 errors)
+    rule_At_least_one_Quality_Evaluation_must_be_Reproved (grails.validation.ValidationErrors: 0 errors)
+    RR Abierta -> Asignada (grails.validation.ValidationErrors: 0 errors)
+    Reparacion OK -> QA_Lab (grails.validation.ValidationErrors: 0 errors)
+*/

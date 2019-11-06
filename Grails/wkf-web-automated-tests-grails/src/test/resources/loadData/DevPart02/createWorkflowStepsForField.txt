@@ -1,0 +1,628 @@
+import br.com.careman.domain.*
+import static br.com.careman.groovy.enums.StepStatusType.*
+import static br.com.careman.groovy.enums.WorkflowType.*
+import static br.com.careman.groovy.enums.StepRuleType.*
+
+def stepStatuses = [:]
+StepStatus.where{workflowType == SERVICE_ORDER && status == 'ENABLED'}.each{
+    stepStatuses[it.name] = it
+}
+
+def stepRules = [:]
+StepRule.where{workflowType == SERVICE_ORDER && enabled}.each{
+    stepRules[it.id] = it
+}
+
+def validations = [
+    'rule_Defect':1l,
+    'rule_Solution':2l,
+    'rule_Equipment': 3l,
+    'rule_New_Equipment':4l,
+    "(//input[@id='rule_New_Equipment'])[2]":5l,//'rule_New_Equipment'
+    'rule_Reason_For_Cancellation': 6l,
+    'rule_Service_Provider':7l,
+    'rule_Service_Provider_Technician':8l,
+    'rule_Contractor_External_ID':9l,
+    'rule_Tracking_Number':10l,
+    'rule_Equipment_Serial_Number': 11l,
+    'rule_Inventoried_Equipment':12l,
+    'rule_Inventoried_New_Equipment':13l,
+    'rule_Equipment_Contractor_External_ID': 14l,
+    'rule_New_Equipment_Serial_Number':15l,
+    'rule_If_exists_New_Equipment_Serial_Number':16l,
+    'rule_New_Equipment_Contractor_External_ID':17l,
+    'rule_Service_Provider_through_automatic_routing': 18l,
+    'rule_Attachment':19l
+]
+
+def triggers = [
+    'rule_Define_Routed_Date':21l,
+    'rule_If_Has_New_Equipment,_disassociate_Equipment_from_Customer_setting_Situation_to_GOOD,_and_delete_New_Equipment_if_it_is_temporary':22l,
+    'rule_If_Has_New_Equipment,_disassociate_Equipment_from_Customer_setting_Situation_to_BAD_and_Service_Provider':23l,
+    'rule_Disassociate_Equipment_from_Customer_setting_Situation_to_GOOD_and_Service_Provider': 24l,
+    'rule_Disassociate_New_Equipment_from_Customer_setting_Situation_to_GOOD,_and_delete_New_Equipment_if_it_is_temporary':25l,
+    'rule_Turn_Equipment_as_Inventoried':26l,
+    'rule_Turn_New_Equipment_as_Inventoried':27l
+]
+
+def customValidations = [
+    'requestAuthentication':20l
+]
+
+def customTriggers = [
+    'recalculateDeadLineInNHours':28l,
+    'recalculateDeadLineServiceProviderInNHours':29l,
+    'recalculateDeadLineServiceProviderWithSLAGroup':30l,
+    'routingServiceOrderAccordingToRoutingGroup':31l
+]
+
+[
+    [type:SERVICE_ORDER, name:'Instalação', steps: [
+        [from:'Nova', to:'Para Aprovação', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"]
+        ]],
+        [from:'Para Aprovação', to:'Cancelado', rules:[
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            validations['rule_Reason_For_Cancellation'],
+            triggers['rule_Disassociate_Equipment_from_Customer_setting_Situation_to_GOOD_and_Service_Provider']
+        ]],
+        [from:'Para Aprovação', to:'Aprovado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"]
+        ]],
+        [from:'Para Aprovação', to:'Encaminhado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            validations['rule_Service_Provider'],
+            triggers['rule_Define_Routed_Date']
+        ]],
+        [from:'Encaminhado', to:'Em Campo', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Em Campo', to:'Cancelado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            validations['rule_Service_Provider'],
+            validations['rule_Reason_For_Cancellation'],
+            triggers['rule_Disassociate_Equipment_from_Customer_setting_Situation_to_GOOD_and_Service_Provider']
+        ]],
+        [from:'Em Campo', to:'Finalizado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            validations['rule_Service_Provider'],
+            validations['rule_Inventoried_Equipment'],
+            validations['rule_Equipment_Serial_Number']
+        ]],
+        [from:'Nova', to:'Encaminhado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Service_Provider_through_automatic_routing'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            triggers['rule_Define_Routed_Date']
+        ]]
+    ]],
+
+    [type:SERVICE_ORDER, name:'Desinstalação', steps: [
+        [from:'Nova', to:'Encaminhado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Service_Provider_through_automatic_routing'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            triggers['rule_Define_Routed_Date']
+        ]],
+        [from:'Nova', to:'Cancelado', rules:[
+            validations['rule_Reason_For_Cancellation'],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Encaminhado', to:'Em Campo', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Em Campo', to:'Finalizado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Equipment_Serial_Number'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            validations['rule_Service_Provider'],
+            triggers['rule_Disassociate_Equipment_from_Customer_setting_Situation_to_GOOD_and_Service_Provider']
+        ]],
+        [from:'Em Campo', to:'Cancelado', rules:[
+            validations['rule_Reason_For_Cancellation'],
+            validations['rule_Service_Provider']
+        ]]
+    ]],
+
+    [type:SERVICE_ORDER, name:'Manutenção', steps: [
+        [from:'Pre-Start', to:'Nova', rules:[
+            validations['rule_Contractor_External_ID']
+        ]],
+        [from:'Nova', to:'Encaminhado', rules:[
+            validations['rule_Contractor_External_ID'],
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Service_Provider_through_automatic_routing'],
+            triggers['rule_Define_Routed_Date']
+        ]],
+        [from:'Nova', to:'Finalizado', rules:[
+            validations['rule_Contractor_External_ID'],
+            validations['rule_Defect'],
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_If_exists_New_Equipment_Serial_Number'],
+            validations['rule_Service_Provider'],
+            validations['rule_Solution'],
+            triggers['rule_Define_Routed_Date']
+        ]],
+        [from:'Encaminhado', to:'Em Campo', rules:[
+            validations['rule_Contractor_External_ID'],
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Em Campo', to:'Cancelado', rules:[
+            validations['rule_Reason_For_Cancellation'],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Em Campo', to:'Finalizado', rules:[
+            validations['rule_Contractor_External_ID'],
+            validations['rule_Defect'],
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Equipment_Serial_Number'],
+            validations['rule_If_exists_New_Equipment_Serial_Number'],
+            validations['rule_Service_Provider'],
+            validations['rule_Solution']
+        ]]
+    ]],
+
+    [type:SERVICE_ORDER, name:'Troca de Tecnologia', steps: [
+        [from:'Nova', to:'Encaminhado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Service_Provider_through_automatic_routing'],
+            validations['rule_Service_Provider'],
+            triggers['rule_Define_Routed_Date']
+        ]],
+        [from:'Encaminhado', to:'Em Campo', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Em Campo', to:'Finalizado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Equipment_Serial_Number'],
+            validations['rule_New_Equipment_Contractor_External_ID'],
+            validations['rule_Inventoried_New_Equipment'],
+            validations['rule_New_Equipment_Serial_Number'],
+            validations['rule_If_exists_New_Equipment_Serial_Number'],
+            validations['rule_Service_Provider'],
+            triggers['rule_Disassociate_Equipment_from_Customer_setting_Situation_to_GOOD_and_Service_Provider']
+        ]],
+        [from:'Em Campo', to:'Finalizado (Sem Troca)', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Equipment_Serial_Number'],
+            validations['rule_New_Equipment_Contractor_External_ID'],
+            validations['rule_Inventoried_New_Equipment'],
+            validations['rule_New_Equipment_Serial_Number'],
+            validations['rule_If_exists_New_Equipment_Serial_Number'],
+            validations['rule_Service_Provider'],
+            triggers['rule_Disassociate_Equipment_from_Customer_setting_Situation_to_GOOD_and_Service_Provider'],
+        ]],
+        [from:'Em Campo', to:'Cancelado (Pendente Autorização)', rules:[
+            validations['rule_Reason_For_Cancellation'],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Cancelado (Pendente Autorização)', to:'Cancelado', rules:[
+            validations['rule_Reason_For_Cancellation'],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Cancelado (Pendente Autorização)', to:'Reencaminhado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Reencaminhado', to:'Em Campo', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Service_Provider']
+        ]]
+    ]],
+
+    [type:SERVICE_ORDER, name:'Reconfiguração', steps: [
+        [from:'Nova', to:'Encaminhado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Service_Provider'],
+            triggers['rule_Define_Routed_Date']
+        ]],
+        [from:'Nova', to:'Cancelado', rules:[
+            validations['rule_Reason_For_Cancellation'],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Nova', to:'Finalizado', rules:[
+            validations['rule_Defect'],
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_If_exists_New_Equipment_Serial_Number'],
+            validations['rule_Service_Provider'],
+            validations['rule_Solution'],
+            triggers['rule_If_Has_New_Equipment,_disassociate_Equipment_from_Customer_setting_Situation_to_BAD_and_Service_Provider']
+        ]],
+        [from:'Encaminhado', to:'Em Campo', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Em Campo', to:'Cancelado', rules:[
+            validations['rule_Reason_For_Cancellation'],
+            validations['rule_Service_Provider'],
+            triggers['rule_Disassociate_New_Equipment_from_Customer_setting_Situation_to_GOOD,_and_delete_New_Equipment_if_it_is_temporary']
+        ]],
+        [from:'Em Campo', to:'Finalizado', rules:[
+            validations['rule_Defect'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Equipment_Serial_Number'],
+            validations['rule_If_exists_New_Equipment_Serial_Number'],
+            validations['rule_Service_Provider'],
+            validations['rule_Solution'],
+            triggers['rule_If_Has_New_Equipment,_disassociate_Equipment_from_Customer_setting_Situation_to_BAD_and_Service_Provider']
+        ]]
+    ]],
+
+    [type:SERVICE_ORDER, name:'Atualização de Software', steps: [
+        [from:'Nova', to:'Encaminhado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Service_Provider_through_automatic_routing'],
+            triggers['rule_Define_Routed_Date']
+        ]],
+        [from:'Nova', to:'Cancelado', rules:[
+            validations['rule_Reason_For_Cancellation'],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Nova', to:'Finalizado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Equipment_Serial_Number'],
+            validations['rule_If_exists_New_Equipment_Serial_Number'],
+            validations['rule_Service_Provider'],
+            triggers['rule_If_Has_New_Equipment,_disassociate_Equipment_from_Customer_setting_Situation_to_BAD_and_Service_Provider']
+        ]],
+        [from:'Encaminhado', to:'Em Campo', rules:[
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Em Campo', to:'Cancelado', rules:[
+            validations['rule_Reason_For_Cancellation'],
+            validations['rule_Service_Provider'],
+            triggers['rule_Disassociate_New_Equipment_from_Customer_setting_Situation_to_GOOD,_and_delete_New_Equipment_if_it_is_temporary']
+        ]],
+        [from:'Em Campo', to:'Finalizado', rules:[
+            validations['rule_Defect'],
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Equipment_Serial_Number'],
+            validations['rule_If_exists_New_Equipment_Serial_Number'],
+            validations['rule_Service_Provider'],
+            validations['rule_Solution'],
+            triggers['rule_If_Has_New_Equipment,_disassociate_Equipment_from_Customer_setting_Situation_to_BAD_and_Service_Provider']
+        ]]
+    ]],
+
+    [type:SERVICE_ORDER, name:'Cancelamento', steps: [
+        [from:'Nova', to:'Encaminhado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            validations['rule_Service_Provider'],
+            triggers['rule_Define_Routed_Date']
+        ]],
+        [from:'Nova', to:'Cancelado', rules:[
+            validations['rule_Reason_For_Cancellation'],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Nova', to:'Finalizado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Encaminhado', to:'Em Campo', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Em Campo', to:'Cancelado', rules:[
+            validations['rule_Reason_For_Cancellation'],
+            validations['rule_Service_Provider']
+        ]],
+        [from:'Em Campo', to:'Finalizado', rules:[
+            validations['rule_Equipment'],
+            validations['rule_Equipment_Contractor_External_ID'],
+            validations['rule_Equipment_Serial_Number'],
+            validations["(//input[@id='rule_New_Equipment'])[2]"],
+            validations['rule_Service_Provider']
+        ]]
+    ]]
+
+].each {
+    def workflowInstance = new Workflow(status:'ENABLED', workflowType:it.type, name:it.name)
+    it.steps.each { step ->
+        workflowInstance.addToSteps(new Step(status: 'ENABLED',
+                                               from: stepStatuses[step.from],
+                                                 to: stepStatuses[step.to],
+                                              rules: step.rules.collect{stepRules[it]}))
+    }
+    workflowInstance.save()
+    def printStep = { step ->
+        "${step.toString()} (${step.errors}) \n${step.rules.collect{"${it.identifier} (${it.errors})"}.sort().join('\n')}"
+    }
+    println "${workflowInstance} (${workflowInstance.errors})"
+    println workflowInstance.steps.collect{printStep(it)}.sort().join('\n')
+}
+
+/*
+    Instalação (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Disassociate_Equipment_from_Customer_setting_Situation_to_GOOD_and_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Finalizado (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Inventoried_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Encaminhado -> Em Campo (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Encaminhado (grails.validation.ValidationErrors: 0 errors)
+    rule_Define_Routed_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider_through_automatic_routing (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Para Aprovação (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    Para Aprovação -> Aprovado (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    Para Aprovação -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Disassociate_Equipment_from_Customer_setting_Situation_to_GOOD_and_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    Para Aprovação -> Encaminhado (grails.validation.ValidationErrors: 0 errors)
+    rule_Define_Routed_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+
+    Desinstalação (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Finalizado (grails.validation.ValidationErrors: 0 errors)
+    rule_Disassociate_Equipment_from_Customer_setting_Situation_to_GOOD_and_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Encaminhado -> Em Campo (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Encaminhado (grails.validation.ValidationErrors: 0 errors)
+    rule_Define_Routed_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider_through_automatic_routing (grails.validation.ValidationErrors: 0 errors)
+
+    Manutenção (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Finalizado (grails.validation.ValidationErrors: 0 errors)
+    rule_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Defect (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_If_exists_New_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_Solution (grails.validation.ValidationErrors: 0 errors)
+    Encaminhado -> Em Campo (grails.validation.ValidationErrors: 0 errors)
+    rule_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Encaminhado (grails.validation.ValidationErrors: 0 errors)
+    rule_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Define_Routed_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider_through_automatic_routing (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Finalizado (grails.validation.ValidationErrors: 0 errors)
+    rule_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Defect (grails.validation.ValidationErrors: 0 errors)
+    rule_Define_Routed_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_If_exists_New_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_Solution (grails.validation.ValidationErrors: 0 errors)
+    Pre-Start -> Nova (grails.validation.ValidationErrors: 0 errors)
+    rule_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+
+    Troca de Tecnologia (grails.validation.ValidationErrors: 0 errors)
+    Cancelado (Pendente Autorização) -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Cancelado (Pendente Autorização) -> Reencaminhado (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Cancelado (Pendente Autorização) (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Finalizado (Sem Troca) (grails.validation.ValidationErrors: 0 errors)
+    rule_Disassociate_Equipment_from_Customer_setting_Situation_to_GOOD_and_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_If_exists_New_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Inventoried_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Finalizado (grails.validation.ValidationErrors: 0 errors)
+    rule_Disassociate_Equipment_from_Customer_setting_Situation_to_GOOD_and_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_If_exists_New_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Inventoried_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Encaminhado -> Em Campo (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Encaminhado (grails.validation.ValidationErrors: 0 errors)
+    rule_Define_Routed_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider_through_automatic_routing (grails.validation.ValidationErrors: 0 errors)
+    Reencaminhado -> Em Campo (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+
+    Reconfiguração (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Disassociate_New_Equipment_from_Customer_setting_Situation_to_GOOD,_and_delete_New_Equipment_if_it_is_temporary (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Finalizado (grails.validation.ValidationErrors: 0 errors)
+    rule_Defect (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_If_Has_New_Equipment,_disassociate_Equipment_from_Customer_setting_Situation_to_BAD_and_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_If_exists_New_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_Solution (grails.validation.ValidationErrors: 0 errors)
+    Encaminhado -> Em Campo (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Encaminhado (grails.validation.ValidationErrors: 0 errors)
+    rule_Define_Routed_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Finalizado (grails.validation.ValidationErrors: 0 errors)
+    rule_Defect (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_If_Has_New_Equipment,_disassociate_Equipment_from_Customer_setting_Situation_to_BAD_and_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_If_exists_New_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_Solution (grails.validation.ValidationErrors: 0 errors)
+
+    Atualização de Software (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Disassociate_New_Equipment_from_Customer_setting_Situation_to_GOOD,_and_delete_New_Equipment_if_it_is_temporary (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Finalizado (grails.validation.ValidationErrors: 0 errors)
+    rule_Defect (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_If_Has_New_Equipment,_disassociate_Equipment_from_Customer_setting_Situation_to_BAD_and_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_If_exists_New_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_Solution (grails.validation.ValidationErrors: 0 errors)
+    Encaminhado -> Em Campo (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Encaminhado (grails.validation.ValidationErrors: 0 errors)
+    rule_Define_Routed_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider_through_automatic_routing (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Finalizado (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_If_Has_New_Equipment,_disassociate_Equipment_from_Customer_setting_Situation_to_BAD_and_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    rule_If_exists_New_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+
+    Cancelamento (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Em Campo -> Finalizado (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Serial_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Encaminhado -> Em Campo (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Reason_For_Cancellation (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Encaminhado (grails.validation.ValidationErrors: 0 errors)
+    rule_Define_Routed_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Finalizado (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Equipment_Contractor_External_ID (grails.validation.ValidationErrors: 0 errors)
+    rule_New_Equipment (grails.validation.ValidationErrors: 0 errors)
+    rule_Service_Provider (grails.validation.ValidationErrors: 0 errors)
+*/

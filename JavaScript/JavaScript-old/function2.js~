@@ -1,0 +1,15 @@
+var idade = 30
+
+var getIdade = function () {
+    return this.idade;
+}
+
+var pessoa = {
+  nome: "Pessoinha",
+  idade: 40,
+  getIdade: getIdade
+};
+
+console.log(getIdade())
+console.log(pessoa.getIdade())
+

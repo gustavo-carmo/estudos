@@ -1,0 +1,18 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile "junit:junit:4.11"  // Or whatever version
+}
+
+sourceSets {
+
+    test {
+        java {
+            srcDirs = ["test/CalculatorTest"]  // Note @Peter's comment below
+        }
+    }
+}

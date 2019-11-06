@@ -1,0 +1,7 @@
+import br.com.careman.domain.*
+    
+Contract contract = Contractor.findByName("%contractor%").contract
+
+[%models%].each {
+	contract.models = contract.models + Model.findByName(it)
+}

@@ -1,0 +1,20 @@
+import br.com.careman.domain.OpeningHours
+import br.com.careman.domain.OpeningHoursGroup
+import br.com.careman.groovy.enums.OpeningHoursOptions
+import br.com.careman.groovy.mapping.TimeDurationUserType
+import groovy.time.TimeDuration
+
+def results = OpeningHours.createCriteria().list (max: 5, offset: 0) {
+    like("startAt", new TimeDuration(%startAt%, 0, 0, 0))
+    like("endAt", new TimeDuration(%endAt%, 0, 0, 0))
+}
+
+def objectList = []
+results.each{
+    objectList += it
+}
+
+new OpeningHoursGroup(
+    name:"%name%", 
+    openingHours: objectList
+).save(failOnError: true)

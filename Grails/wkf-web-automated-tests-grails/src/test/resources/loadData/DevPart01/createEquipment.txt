@@ -1,0 +1,124 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+import br.com.careman.groovy.enums.*
+
+// Equipment.withNewSession {
+
+def equipmentInstance01 = new Equipment(status: "ENABLED", contractor: Contractor.findByAlias("BANRISUL"), situation: Situation.GOOD)
+equipmentInstance01.model = Model.findByName("BANJO")
+equipmentInstance01.serialNumber = "9729012741"
+equipmentInstance01.contractorExternalId = "00000674"
+equipmentInstance01.customFieldValues = "{\"1\":\"00414002300\",\"2\":\"000000000000506\"}"
+println equipmentInstance01.validate()
+println equipmentInstance01.save()
+println equipmentInstance01.errors
+
+def equipmentInstance02 = new Equipment(status: "ENABLED", contractor: Contractor.findByAlias("BANRISUL"), situation: Situation.GOOD)
+equipmentInstance02.model = Model.findByName("BANJO")
+equipmentInstance02.serialNumber = "9729012742"
+equipmentInstance02.customFieldValues = "{\"1\":\"00414002200\",\"2\":\"000000000000873\"}"
+println equipmentInstance02.validate()
+println equipmentInstance02.save()
+println equipmentInstance02.errors
+
+def equipmentInstance03 = new Equipment(status: "ENABLED", contractor: Contractor.findByAlias("BANRISUL"), situation: Situation.GOOD)
+equipmentInstance03.model = Model.findByName("BANJO")
+equipmentInstance03.serialNumber = "9729012743"
+equipmentInstance03.customFieldValues = "{\"1\":\"00414002300\",\"2\":\"000000000000249\"}"
+println equipmentInstance03.validate()
+println equipmentInstance03.save()
+println equipmentInstance03.errors
+
+def equipmentInstance04 = new Equipment(status: "ENABLED", contractor: Contractor.findByAlias("BANRISUL"), situation: Situation.GOOD)
+equipmentInstance04.model = Model.findByName("BANJO")
+equipmentInstance04.serialNumber = "9729012744"
+equipmentInstance04.contractorExternalId = "00000675"
+equipmentInstance04.customFieldValues = "{\"1\":\"00414004000\",\"2\":\"000000000000010\"}"
+println equipmentInstance04.validate()
+println equipmentInstance04.save()
+println equipmentInstance04.errors
+
+def equipmentInstance05 = new Equipment(status: "ENABLED", serviceProvider: ServiceProvider.findByAlias("TEFTI Barueri"), situation: Situation.GOOD)
+equipmentInstance05.model = Model.findByName("ST3232ECTR")
+equipmentInstance05.quantity = 100
+println equipmentInstance05.validate()
+println equipmentInstance05.save()
+println equipmentInstance05.errors
+
+def equipmentInstance06 = new Equipment(status: "ENABLED", contractor: Contractor.findByAlias("POSNET"), serviceProvider: ServiceProvider.findByAlias("Vortex"), situation: Situation.GOOD)
+equipmentInstance06.model = Model.findByName("ST3232ECTR")
+equipmentInstance06.quantity = 100
+println equipmentInstance06.validate()
+println equipmentInstance06.save()
+println equipmentInstance06.errors
+
+def equipmentInstance07 = new Equipment(status: "ENABLED", contractor: Contractor.findByAlias("CABAL"), serviceProvider: ServiceProvider.findByAlias("Vortex"), situation: Situation.GOOD)
+equipmentInstance07.model = Model.findByName("ST763A")
+equipmentInstance07.quantity = 5
+println equipmentInstance07.validate()
+println equipmentInstance07.save()
+println equipmentInstance07.errors
+
+def equipmentInstance08 = new Equipment(status: "ENABLED", contractor: Contractor.findByAlias("POSNET"), serviceProvider: ServiceProvider.findByAlias("Vortex"), situation: Situation.GOOD)
+equipmentInstance08.model = Model.findByName("CAP 100UF6V3(SMD)")
+equipmentInstance08.quantity = 30
+println equipmentInstance08.validate()
+println equipmentInstance08.save()
+println equipmentInstance08.errors
+
+def equipmentInstance09 = new Equipment(status: "ENABLED", serviceProvider: ServiceProvider.findByAlias("Vortex"), situation: Situation.GOOD)
+equipmentInstance09.model = Model.findByName("CAP 100UF6V3(SMD)")
+equipmentInstance09.quantity = 30
+println equipmentInstance09.validate()
+println equipmentInstance09.save()
+println equipmentInstance09.errors
+
+def equipmentInstance10 = new Equipment(status: "ENABLED", serviceProvider: ServiceProvider.findByAlias("TEFTI Barueri"), situation: Situation.GOOD)
+equipmentInstance10.model = Model.findByName("Fonte ICT220")
+equipmentInstance10.quantity = 20
+println equipmentInstance10.validate()
+println equipmentInstance10.save()
+println equipmentInstance10.errors
+
+def equipmentInstance11 = new Equipment(status: "ENABLED", serviceProvider: ServiceProvider.findByAlias("Smart"), situation: Situation.GOOD)
+equipmentInstance11.model = Model.findByName("CAP 100UF6V3(SMD)")
+equipmentInstance11.quantity = 50
+println equipmentInstance11.validate()
+println equipmentInstance11.save()
+println equipmentInstance11.errors
+
+def equipmentInstance12 = new Equipment(status: "ENABLED", serviceProvider: ServiceProvider.findByAlias("Smart"), situation: Situation.GOOD)
+equipmentInstance12.model = Model.findByName("ACQUA")
+equipmentInstance12.serialNumber = "9729012745"
+equipmentInstance12.contractorExternalId = "00000340"
+println equipmentInstance12.validate()
+println equipmentInstance12.save()
+println equipmentInstance12.errors
+
+def equipmentInstance13 = new Equipment(status: "ENABLED", serviceProvider: ServiceProvider.findByAlias("Smartf1"), situation: Situation.GOOD)
+equipmentInstance13.model = Model.findByName("CAP 100UF6V3(SMD)")
+equipmentInstance13.quantity = 20
+println equipmentInstance13.validate()
+println equipmentInstance13.save()
+println equipmentInstance13.errors
+
+def equipmentInstance14 = new Equipment(status: "ENABLED", serviceProvider: ServiceProvider.findByAlias("Smartf1"), situation: Situation.GOOD)
+equipmentInstance14.model = Model.findByName("ACQUA")
+equipmentInstance14.serialNumber = "9729012746"
+equipmentInstance14.contractorExternalId = "00000380"
+println equipmentInstance14.validate()
+println equipmentInstance14.save()
+println equipmentInstance14.errors
+
+def equipmentInstance15 = new Equipment(status: "ENABLED", serviceProvider: ServiceProvider.findByAlias("Smart"), situation: Situation.GOOD)
+equipmentInstance15.model = Model.findByName("Fonte ICT220")
+equipmentInstance15.quantity = 100
+
+def equipmentPOInstance = EquipmentPO.findOrSaveWhere(PO: "1204567")
+def equipmentSIInstance = EquipmentSI.findOrSaveWhere(SI: "1214567", equipmentPO: equipmentPOInstance)
+def equipmentOrigin = EquipmentOrigin.findOrSaveWhere(equipmentSI: equipmentSIInstance)
+equipmentInstance15.equipmentOrigin = equipmentOrigin
+
+println equipmentInstance15.validate()
+println equipmentInstance15.save()
+println equipmentInstance15.errors

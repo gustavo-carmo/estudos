@@ -1,0 +1,33 @@
+apply plugin: 'java'
+/*
+apply plugin: 'jvm-component'
+apply plugin: 'java-lang'
+apply plugin: 'junit-test-suite'
+*/
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': 'HelloWorld')
+    }
+}
+
+/*
+
+plugins {
+    id 'jvm-component'
+    id 'java-lang'
+    id 'junit-test-suite'
+}
+
+model {
+    testSuites {
+        test(JUnitTestSuiteSpec) {
+            jUnitVersion '4.12'
+        }
+    }
+}
+*/

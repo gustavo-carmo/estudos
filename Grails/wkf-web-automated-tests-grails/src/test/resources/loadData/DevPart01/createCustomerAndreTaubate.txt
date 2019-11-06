@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 18"
+addressInstance.number = ""
+addressInstance.district = ""
+addressInstance.zipCode = "91523133"
+addressInstance.city = City.findByNameAndState("Taubaté", State.findByName("São Paulo"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("TICKET")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "42370218000188"
+customerInstance.contactName = ""
+// customerInstance.alias = ""
+customerInstance.name = "Andre Taubaté"
+customerInstance.email = ""
+customerInstance.phoneNumber = "34959530"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 18
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Andre Taubaté - 42.370.218/0001-88
+// grails.validation.ValidationErrors: 0 errors

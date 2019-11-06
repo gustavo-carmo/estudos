@@ -1,0 +1,60 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "Alameda Juari"
+addressInstance.number = "485"
+addressInstance.complement = "Centro Empresarial Tamboré"
+addressInstance.district = "Tamboré"
+addressInstance.zipCode = "06460090"
+addressInstance.city = City.findByNameAndState("Barueri", State.findByName("São Paulo"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def serviceProvider = new ServiceProvider(address: addressInstance)
+serviceProvider.tenant = true
+serviceProvider.hq = true
+serviceProvider.documentType = "CNPJ"
+serviceProvider.documentNumber = "07697245000169"
+serviceProvider.alias = "TEFTI Barueri"
+serviceProvider.contactName = "Sidney Araujo"
+serviceProvider.status = "ENABLED"
+serviceProvider.name = "TEFTI Barueri"
+serviceProvider.email = "sidney.araujo@tefti.com.br"
+serviceProvider.phoneNumber = "1141334099"
+serviceProvider.type = "FIELD"
+
+println serviceProvider.validate()
+println serviceProvider.save()
+println serviceProvider.errors
+
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Cancelamento"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Carga de Software"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Desinstalação"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Instalação"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Manutenção"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Reconfiguração"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Reincidência"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Troca de Tecnologia"))
+
+serviceProvider.addToContractors(Contractor.findByAlias("BANRISUL"))
+serviceProvider.addToContractors(Contractor.findByAlias("POSNET"))
+serviceProvider.addToContractors(Contractor.findByAlias("CABAL"))
+serviceProvider.addToContractors(Contractor.findByAlias("TICKET"))
+
+println serviceProvider.validate()
+println serviceProvider.save()
+println serviceProvider.errors
+
+// expected
+// true 
+// Alameda Juari
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// TEFTI Barueri
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// TEFTI Barueri 
+// grails.validation.ValidationErrors: 0 errors

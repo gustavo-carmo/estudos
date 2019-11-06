@@ -1,0 +1,27 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+
+def city = City.findByNameAndState('Sao Paulo', State.findByName('Sao Paulo'))
+
+if(!city) {
+ throw new Exception("Erro ao encontrar cidade São Paulo: cidades atual [${cities}] - [${City.count()}]")
+}
+
+println new Contractor(
+	documentType: "CNPJ", 
+	documentNumber: "%documentNumber%",
+	alias: "%name%",
+	contactName: 'CONTACT NAME',
+	status: 'ENABLED',
+	name: "%name%",
+	email: 'crudcontractor@new.com',
+	phoneNumber: '(11) 4023-4355',
+	
+	address: new Address(
+		address: 'Avenida Bláh',
+		number: '512',
+		complement: '',
+		zipCode: '13308076',
+		city: city).save(failOnError: true)
+	
+	).save(failOnError: true, flush: true)

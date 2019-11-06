@@ -1,0 +1,52 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "Lavalle"
+addressInstance.number = "341"
+addressInstance.complement = ""
+addressInstance.district = "CABA"
+addressInstance.zipCode = "C1006ACG"
+addressInstance.city = City.findByNameAndState("La Plata", State.findByName("Buenos Aires"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def contractorInstance = new Contractor(address: addressInstance)
+contractorInstance.documentType = "CUIT"
+contractorInstance.documentNumber = "30654364229"
+contractorInstance.alias = "CABAL"
+contractorInstance.contactName = "Cabal"
+contractorInstance.status = "ENABLED"
+contractorInstance.name = "CABAL C.L."
+contractorInstance.email = "sd@cabal.com"
+contractorInstance.phoneNumber = "541156278900"
+
+println contractorInstance.validate()
+println contractorInstance.save()
+println contractorInstance.errors
+
+def contractInstance = new Contract()
+contractInstance.status = "ENABLED"
+contractInstance.addToOpeningHoursGroup(OpeningHoursGroup.findByName("MON-FRI 08h/18h"))
+
+println contractInstance.validate()
+contractInstance.save() // return id
+println contractInstance.errors
+
+contractorInstance.addToContracts(contractInstance)
+println contractorInstance.save()
+println contractorInstance.errors
+
+// expected
+// true
+// Lavalle
+// grails.validation.ValidationErrors: 0 errors
+// true 
+// CABAL 
+// grails.validation.ValidationErrors: 0 errors
+// true 
+// grails.validation.ValidationErrors: 0 errors 
+// CABAL 
+// grails.validation.ValidationErrors: 0 errors

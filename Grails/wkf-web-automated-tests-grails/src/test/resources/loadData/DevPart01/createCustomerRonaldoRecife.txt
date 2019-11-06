@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 8"
+addressInstance.number = ""
+addressInstance.district = ""
+addressInstance.zipCode = "91523133"
+addressInstance.city = City.findByNameAndState("Recife", State.findByName("Pernambuco"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("TICKET")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "95826713000115"
+customerInstance.contactName = ""
+// customerInstance.alias = ""
+customerInstance.name = "Ronaldo Recife"
+customerInstance.email = ""
+customerInstance.phoneNumber = "34959534"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 8
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Ronaldo Recife - 95.826.713/0001-15
+// grails.validation.ValidationErrors: 0 errors

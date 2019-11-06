@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 14"
+addressInstance.number = ""
+addressInstance.district = ""
+addressInstance.zipCode = "91523133"
+addressInstance.city = City.findByNameAndState("Londrina", State.findByName("Paraná"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("BANRISUL")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "34567724000133"
+customerInstance.contactName = ""
+// customerInstance.alias = ""
+customerInstance.name = "Octavio Londrina"
+customerInstance.email = ""
+customerInstance.phoneNumber = "34959530"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 14
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Octavio Londrina - 34.567.724/0001-33
+// grails.validation.ValidationErrors: 0 errors

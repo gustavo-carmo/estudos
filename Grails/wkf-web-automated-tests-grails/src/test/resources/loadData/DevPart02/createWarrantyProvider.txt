@@ -1,0 +1,20 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+import br.com.careman.groovy.enums.WarrantyType
+
+[
+    [name:'Laboratorio Vortex', type:WarrantyType.REPAIR,       days:30,  allowChangeDaysInSO:true],
+    [name:'Ingenico',           type:WarrantyType.MANUFACTURER, days:360, allowChangeDaysInSO:false],
+
+].each {
+
+    def instance = new WarrantyProvider(name:it.name, warrantyType:it.type, days:it.days, allowChangeDaysInSO:it.allowChangeDaysInSO)
+    instance.save()
+    println "${instance} (${instance.errors})"
+}
+
+// Expected
+/*
+    Repair - Laboratorio Vortex (grails.validation.ValidationErrors: 0 errors)
+    Manufacturer - Ingenico (grails.validation.ValidationErrors: 0 errors)
+*/

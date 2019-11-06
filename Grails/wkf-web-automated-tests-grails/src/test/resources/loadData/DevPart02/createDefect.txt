@@ -1,0 +1,22 @@
+import br.com.careman.domain.*
+def familyInstance = Family.findWhere(name:'POS')
+[
+    [name:'Terminal Bloqueado',  solutions:['TROCA DE TERMINAL', 'CONFIGURACAO DO TERMINAL']],
+    [name:'Fonte danificada',    solutions:['Trocar Fonte']]
+].each {
+    def defectInstance = new Defect(status:'ENABLED', family:familyInstance, name:it.name)
+    it.solutions.each { solution ->
+        defectInstance.addToSolutions(Solution.findWhere(name:solution))
+    }
+    defectInstance.save()
+    println "${defectInstance} (${defectInstance.errors})"
+    println defectInstance.solutions.collect{"${it.toString()} (${it.errors})"}.sort().join('\n')
+}
+// Expected
+/*
+    POS: Terminal Bloqueado (grails.validation.ValidationErrors: 0 errors)
+    CONFIGURACAO DO TERMINAL (grails.validation.ValidationErrors: 0 errors)
+    TROCA DE TERMINAL (grails.validation.ValidationErrors: 0 errors)
+    POS: Fonte danificada (grails.validation.ValidationErrors: 0 errors)
+    Trocar Fonte (grails.validation.ValidationErrors: 0 errors)
+*/

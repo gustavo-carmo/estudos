@@ -1,0 +1,24 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+    
+def customFieldInstance = new CustomField(name: "Tipo de Ordem de Serviço", status: "ENABLED", type: CustomFieldType.SERVICE_ORDER, kind: CustomFieldKind.LIST)
+
+customFieldInstance.addToItems(new CustomFieldItem(name: "Laboratory", status: "ENABLED"))
+customFieldInstance.addToItems(new CustomFieldItem(name: "Field", status: "ENABLED"))
+customFieldInstance.addToItems(new CustomFieldItem(name: "Help Desk", status: "ENABLED"))
+
+customFieldInstance.addToServiceGroups(ServiceGroup.findByName("Manutenção"))
+println customFieldInstance.validate()
+println customFieldInstance.save()
+println customFieldInstance.type
+println customFieldInstance.kind
+println customFieldInstance.serviceGroups
+println customFieldInstance.items.collect{String.valueOf(it)}.sort()
+
+// expected
+// true 
+// Tipo de Ordem de Serviço
+// SERVICE_ORDER
+// LIST
+// [Manutenção]
+// [Field, Help Desk, Laboratory]

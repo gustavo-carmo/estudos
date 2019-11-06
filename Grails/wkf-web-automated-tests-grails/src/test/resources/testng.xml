@@ -1,0 +1,467 @@
+<suite name="Workfinity Test-Suite" preserve-order="true">
+
+	<!-- PRIMEIRO BLOCO DE TESTES -->
+<!--  
+	<test name="Isolated tests 1" parallel="classes" preserve-order="true" thread-count="16">
+		<classes>
+			<class name="wkf3.web.gerenciar.grupoDeSLA.GrupoDeSLATestCRUD" />
+			<class name="br.com.workfinity.web.tests.parallel.PermissionTestParallel" />
+			<class name="br.com.workfinity.web.tests.parallel.ServiceProviderTestCRUD" />
+			<class name="br.com.workfinity.web.tests.parallel.ContractorTestCRUD" />
+			<class name="br.com.workfinity.web.tests.parallel.RecessTestCRUD" /> 
+			<class
+				name="br.com.workfinity.web.tests.parallel.OpeningHoursGroupTestCRUD" />
+			<class name="br.com.workfinity.web.tests.parallel.StatusTestCRUD" />
+			<class name="br.com.workfinity.web.tests.parallel.ServiceGroupTestCRUD" />
+			<class name="br.com.workfinity.web.tests.parallel.ManufacturerTestCRUD" />
+			<class name="br.com.workfinity.web.tests.parallel.OpeningHoursTestCRUD" />
+			<class name="br.com.workfinity.web.tests.parallel.SolutionTestCRUD" />
+			<class name="br.com.workfinity.web.tests.parallel.FamilyTestCRUD" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.ReasonForCancellationTestCRUD" />
+			<class
+				name="wkf3.web.gerenciar.contratante.contrato.CadastroDeContratoGenerico" />
+			<class name="wkf3.web.gerenciar.gradeDeAgendamento.GradeDeAgendamento" />
+			<class
+				name="wkf3.web.gerenciar.gradeDeAgendamento.GradeDeAgendamentoGerenciarJanelasDeAtendimento" />
+		</classes>
+	</test>
+ -->
+	<!-- PRIMEIRO BLOCO DE TESTES -->
+
+	<!-- SEGUNDO BLOCO DE TESTES -->
+
+	<test name="Common Background e Consumo OS" preserve-order="true">
+		<classes>
+			<class name="careman.html.tests.LoadTestData" />
+			<class
+				name="br.com.workfinity.web.tests.commonBackground.CommonBackground" />
+			<!-- <class
+				name="wkf3.web.gerenciar.ordemDeServico.ConsumoEmUmaOSPrestadorDeServicosMatriz" /> -->
+		</classes>
+	</test>
+
+	<test name="Backgrounds Trigger, Regra, Mesclagem, WorkPack e Importacoes"
+		preserve-order="true" parallel="classes" thread-count="7">
+		<classes>
+			<!-- <class name="wkf3.web.gerenciar.workPack.WorkPackBackgroundTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerCommonLoadDataTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoCommonLoadDataTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.mesclarEquipamento.MesclarEquipamentoCommonLoadDataTest" /> 
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaBackgroundTest" /> -->
+ 			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteBackgroundTest" /> 
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoBackgroundTest" />
+			<class
+				name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderBackgroundTest" />
+		</classes>
+	</test> 
+<!--
+	<test name="Isolated Tests 2" preserve-order="true" parallel="classes"
+		thread-count="10">
+		<classes>
+			<class name="wkf3.web.gerenciar.controleDeEstoque.PesquisandoEquipamento" />
+			<class name="wkf3.web.gerenciar.notificacao.Notificacao" />
+			<class
+				name="wkf3.web.gerenciar.contratante.contrato.servico.TemplateParaImpressaoDeOrdemDeServicoNoServicoDoContrato" />
+			<class
+				name="wkf3.web.gerenciar.contratante.contrato.TemplateParaImpressaoDeOrdemDeServicoNoContrato" />
+			<class
+				name="wkf3.web.gerenciar.contratante.contrato.servico.ServicoDeUmContrato" />
+			<class name="wkf3.web.gerenciar.contratoDeLocacao.ContratoDeLocacao" />
+			<class
+				name="wkf3.web.gerenciar.contratoDeLocacao.ContratoDeLocacaoGerenciarModelos" />
+		</classes>
+	</test>
+-->
+	<test name="Ordem de Remessa 1" preserve-order="true" parallel="classes"
+		thread-count="21">
+		<classes>
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderAddEquipSerializedByModelModalTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderAllowedExistingAccessoryTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderAllowedExistingComponentTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderAllowedExistingPartTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderAllowedExistingProductTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderAllowedExistingSupplyTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderAllowedNewAccessoryTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderAllowedNewComponentTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderAllowedNewPartTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderAllowedNewProductTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderAllowedNewSupplyTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderCanceledEquipmentSerializedTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderCanceledQuantitativeEquipmentTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderCheckDestinyExistingSerializedEquipWithContractorTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderCheckDestinyExistingSerializedEquipWithoutContractorTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderCheckDestinyNewQuantitativeWithContractorTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderCheckOriginAndDestinyQuantitativeEquipWithContractorTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderCheckOriginAndDestinyQuantitativeEquipWithoutContractorTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderEquipmentConditionTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderEquipmentTemporaryTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderKeepEquipAtFromTest" />
+		</classes>
+	</test>
+
+	<test name="Ordem de Remessa 2" preserve-order="true" parallel="classes"
+		thread-count="19">
+		<classes>
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderModelIsRequiredTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderRemoveExistingQuantitativeEquipTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderRemoveExistingSerializedEquipByAddEquipTableTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderRemoveExistingSerializedEquipByEditShipOrderTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderRemoveNewQuantitativeEquipTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderRemoveNewSerializedEquipByAddEquipTableTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderRemoveNewSerializedEquipByEditShipOrderTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderServiceProviderToServiceProviderWithNewProductTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderTypeOfEquipmentAvailabilityTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderValidateAmountAllowedTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderFromNullNewQuantitativeEquipmentTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderFromNullNewQuantitativeEquipmentWithContractorTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderFromNullNewSerializedEquipWithContractorTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderFromNullNewSerializedEquipTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderFromNullExistingQuantitativeEquipmentTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderFromNullExistingQuantitativeEquipmentWithContractorTest" />
+			<class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderAddEquipByLotTest" />
+
+ 			<!-- <class name="wkf3.web.logistica.ordemDeRemessa.ShipmentOrderEquipmentPromisseTest" /> -->
+			
+			<class name="wkf3.web.gerenciar.ordemDeServico.OrdemDeServicoHistorico" />
+			<class name="br.com.workfinity.web.tests.parallel.LaboratoryParallelTest" />
+		</classes>
+	</test>
+<!-- 	
+	<test name="OS, Logistica, Laboratorio, Importacao e Workpack"
+		preserve-order="true" parallel="classes" thread-count="21">
+		<classes>
+			<class name="wkf3.web.gerenciar.workPack.WorkPackOSTest" />
+			<class name="wkf3.web.gerenciar.workPack.WorkPackEquipmentTest" />
+			<class name="br.com.workfinity.web.tests.parallel.SLAParallelTests" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.ConsumoEmUmaOSValidandoConsumosQueNaoPodemSerAdicionados" />
+			<class name="br.com.workfinity.web.tests.parallel.LogisticParallelTests" />
+			<class name="wkf3.web.gerenciar.ordemDeServico.OrdemDeServicoComentarios" />
+			<class name="wkf3.web.gerenciar.ordemDeServico.OrdemDeServicoObservacoes" />			
+			<class
+				 name="br.com.workfinity.web.tests.parallel.ImportExportParallelTest" /> 
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.OrdemDeServicoInformandoModelo" />			
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoPrestadorDeServicoEClienteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoImportandoComSucessoComOsRequisitosMinimosTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformadoUmDeadLineMasNaoInformoUmServiceProviderDeadLineTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmaCidadeInvalidaTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmaDataDeAberturaNoFormatoInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmApelidoDeContratanteDiferenteDoIdDoContratanteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmApelidoDeContratanteInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmCepInvalidoTest" />
+		</classes>
+	</test>
+
+	<test name="Regra de Validacao, Trigger e Mesclagem 1"
+		preserve-order="true" parallel="classes" thread-count="21">
+		<classes>
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoEquipamentoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoIdentificadorExternoDoContratanteObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoNovoEquipamentoProibidoTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoNovoEquipamentoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoNumeroDeRastreamentoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoPrestadorDeServicoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoTecnicoDoPrestadorDeServicoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoMotivoDeCancelamentoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerDefineDataDeEncaminhamentoTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.mesclarEquipamento.MesclarEquipamentoNaOrdemDeServicoEstoqueClienteTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.mesclarEquipamento.MesclarEquipamentoNaOrdemDeServicoEstoquePrestadorDeServicoTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerConverteEquipamentoParaSituacaoBadTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerDesassociaEquipamentoDoClienteTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoAnexosVerdadeiroTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerDesassociaNovoEquipamentoDoClienteTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerMarcaEquipamentoComoInventariadoTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerMarcaNovoEquipamentoComoInventariadoTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerAssociaEquipamentoAoPrestadorDeServicoTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerAssociaNovoEquipamentoAoPrestadorDeServicoTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.mesclarEquipamento.MesclarNovoEquipamentoNaOrdemDeServicoEstoquePrestadorDeServicoTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.mesclarEquipamento.MesclarNovoEquipamentoNaOrdemDeServicoEstoqueClienteTest" />
+		</classes>
+	</test>
+ 
+	<test name="Regra de Validacao, Trigger e Mesclagem 2"
+		preserve-order="true" parallel="classes" thread-count="21">
+		<classes>
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoEquipamentoNumeroLogicoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoEquipamentoNumeroDeSerieObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerAssociaEquipamentoAoClienteTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerAssociaNovoEquipamentoAoClienteTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoEquipamentoInventariadoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoNovoEquipamentoInventariadoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerDesassociaEquipamentoDoClienteMantemSituacaoGoodAssociaEquipamentoAoPrestadorDeServicoTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerDesassociaNovoEquipamentoDoClienteMantemSituacaoGoodEDeletaNovoEquipamentoSeEleForTemporarioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoNovoEquipamentoNumeroDeSerieObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoNovoEquipamentoNumeroLogicoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoDefeitoEncontradoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoDefeitoInformadoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoSolucaoObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.regrasDeValidacao.RegrasDeValidacaoSeExistirNovoEquipamentoNumeroDeSerieObrigatorioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.mesclarEquipamento.MesclarEquipamentoNaOrdemDeServicoTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.mesclarEquipamento.MesclarNovoEquipamentoNaOrdemDeServicoTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerSeHouverNovoEquipamentoDesassociaOEquipamentoDoClienteConverteSituacaoParaBadEAssociaOEquipamentoAoPrestadorDeServicoTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerSeHouverNovoEquipamentoDesassociaOEquipamentoDoClienteConverteSituacaoParaGoodEDeletaNovoEquipamentoSeEleForTemporarioTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerConverteEquipamentoParaSituacaoGoodTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerConverteNovoEquipamentoParaSituacaoBadTest" />
+			<class
+				name="wkf3.web.gerenciar.ordemDeServico.trigger.TriggerConverteNovoEquipamentoParaSituacaoGoodTest" />
+		</classes>
+	</test>
+-->
+	<test name="Importacao de Cliente" preserve-order="true" parallel="classes"
+		thread-count="21">
+		<classes>
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoInformoUmaCidadeInvalidaTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoInformoUmApelidoDeContratanteInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoInformoUmEstadoInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoInformoUmNomeMaiorQueCemTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoInformoUmNomeMenorQueTresTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoInformoUmStatusInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoInformoUmTipoDeDocumentoInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoNaoInformoOCampoApelidoDeContratanteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoNaoInformoOCampoApelidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoNaoInformoOCampoCepTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoNaoInformoOCampoCidadeTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoNaoInformoOCampoEnderecoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoNaoInformoOCampoEstadoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoNaoInformoOCampoNomeTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoNaoInformoOCampoNumeroDeDocumentoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoNaoInformoOCampoStatusTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoNaoInformoOCampoTelefoneTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoNaoInformoOCampoTipoDeDocumentoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraDarErroQuandoNaoInformoONumeroDeDocumentoDeAcordoComOTipoDeDocumentoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraImportarComSucessoUmClienteComOsRequisitosMinimosTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importCustomer.ImportarClienteDeveraImportarComSucessoUmClienteComTodosOsRequisitosTest" />
+		</classes>
+	</test>
+
+	<test name="Importacao de Equipamento" preserve-order="true"
+		parallel="classes" thread-count="21">
+		<classes>
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmApelidoDeContratanteInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmApelidoDePrestadorDeServicoInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmaSituacaoInvalidaTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmModeloInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmNumeroDeDocumentoDeClienteInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmNumeroDeDocumentoDeClienteNaoAssociadoAoContratanteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmStatusInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmTipoDeDocumentoInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmWarrantyCreatedDateNoFormatoInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmWarrantyDateEndNoFormatoInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmWarrantyProviderNameInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmWarrantyTypeDeServiceENaoInformoUmClienteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoInformoUmWarrantyTypeInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoLocalizacaoForDiferenteDaLocalizacaoDoPrestadorDeServicoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoNaoInformoOCampoApelidoDeContratanteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoNaoInformoOCampoNomeDoModeloTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoNaoInformoOCampoSituacaoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoNaoInformoOCampoStatusTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraDarErroQuandoNumeroDeDocumentoForDiferenteDoTipoDeDocumentoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraIgnorarOCampoQuantityEmUmEquipamentoDoTipoProdutoParteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoDeveraIgnorarOCampoSerialNumberEmUmEquipamentoDoTipoAcessorioInsumoConsumoTest" />
+		</classes>
+	</test>
+<!-- 
+	<test name="Importacao OS Generica 1"
+		preserve-order="true" parallel="classes" thread-count="21">
+		<classes>
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmDeadLineNoFormatoInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmEstadoInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoIdEApelidoDeContratanteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmFollowedDateNoFormatoInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmServiceProviderDeadLineMasNaoInformoUmDeadLineTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmServiceProviderDeadLineNoFormatoInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmServicoDiferenteDoQueContratantePossuiTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmStatusInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmTipodeDocumentoInvalidoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoASiglaDoEstadoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoCepDoClienteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoCidadeDoClienteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoEstadoDoClienteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoNomeDoClienteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoNumeroDeDocumentoDoClienteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoServicoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoStatusTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoTelefoneDoClienteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoTipoDeDocumentoDoClienteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNumeroDeDocumentoForDiferenteDoTipoDeDocumentoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaImportandoComSucessoComTodosOsRequisitosTest" />
+		</classes>
+	</test>
+ --><!-- 
+	<test name="Importacao de OS e Equipamento Corrigir"
+		preserve-order="true" parallel="classes" thread-count="12">
+		<classes>
+			<class
+				name="br.com.workfinity.web.tests.parallel.importEquipment.ImportarEquipamentoImportandoComSucessoComTodosOSRequisitosTest" />
+
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaImportandoComSucessoComOsRequisitosMinimosTest" />
+
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoApelidoDePrestadorDeServicoInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmaSituacaoInvalidaNoEquipamentoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmaSituacaoInvalidaNoNovoEquipamentoTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmEquipmentModelIdInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmEquipmentModelNameInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmNewEquipmentModelIdInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmNewEquipmentModelNameInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmProjetoInexistenteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoApelidoDeClienteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoDataDeAberturaTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoNaoInformoNomeDeContatoDoClienteTest" />
+			<class
+				name="br.com.workfinity.web.tests.parallel.importGenericServiceOrder.ImportarOSGenericaDeveraDarErroQuandoInformoUmTelefoneInvalidoTest" />
+		</classes>
+	</test>
+-->
+	<!-- SEGUNDO BLOCO DE TESTES -->
+
+	<!-- TESTES QUE SÃO APENAS CRUD -->
+	
+		<!-- <test name="Crud tests" preserve-order="true" parallel="classes"
+			thread-count="10">
+			<classes>
+				<class name="br.com.workfinity.web.tests.parallel.WorkFlowTestCRUD" />
+				<class name="br.com.workfinity.web.tests.parallel.DefectTestCRUD" />
+				<class name="br.com.workfinity.web.tests.parallel.ModelTestCRUD" />
+				<class name="br.com.workfinity.web.tests.parallel.EquipmentTestCRUD" />
+				<class name="br.com.workfinity.web.tests.parallel.CustomerTestCRUD" />
+			</classes>
+		</test> -->
+		
+	<!-- TESTES QUE SÃO APENAS CRUD -->
+
+	<listeners>
+		<listener class-name="careman.html.TestListener" />
+	</listeners>
+</suite>

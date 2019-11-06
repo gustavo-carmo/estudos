@@ -1,0 +1,78 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "Rua Capitão Montanha"
+addressInstance.number = "77"
+addressInstance.complement = ""
+addressInstance.district = "Centro"
+addressInstance.zipCode = "90010-040"
+addressInstance.city = City.findByNameAndState("Porto Alegre", State.findByName("Rio Grande do Sul"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def contractorInstance = new Contractor(address: addressInstance)
+contractorInstance.documentType = "CNPJ"
+contractorInstance.documentNumber = "92702067000196"
+contractorInstance.alias = "BANRISUL"
+contractorInstance.contactName = "TEFTI"
+contractorInstance.status = "ENABLED"
+contractorInstance.name = "Banco do Estado do Rio Grande do Sul S/A"
+contractorInstance.email = "tefti@tefti.com.br"
+contractorInstance.phoneNumber = "5153130000"
+
+println contractorInstance.validate()
+println contractorInstance.save()
+println contractorInstance.errors
+
+def customFieldSpecificationCodRedeInstance = new ContractorCustomFieldSpecification()
+customFieldSpecificationCodRedeInstance.customField = CustomField.findByName("Cód. Rede")
+customFieldSpecificationCodRedeInstance.position = "0"
+customFieldSpecificationCodRedeInstance.required = true
+customFieldSpecificationCodRedeInstance.contractor = contractorInstance
+
+println customFieldSpecificationCodRedeInstance.validate()
+println customFieldSpecificationCodRedeInstance.save()
+println customFieldSpecificationCodRedeInstance.errors
+
+def customFieldSpecificationCodEstabelecimentoInstance = new ContractorCustomFieldSpecification()
+customFieldSpecificationCodEstabelecimentoInstance.customField = CustomField.findByName("Cód. Estabelecimento")
+customFieldSpecificationCodEstabelecimentoInstance.position = "0"
+customFieldSpecificationCodEstabelecimentoInstance.required = true
+customFieldSpecificationCodEstabelecimentoInstance.contractor = contractorInstance
+
+println customFieldSpecificationCodEstabelecimentoInstance.validate()
+println customFieldSpecificationCodEstabelecimentoInstance.save()
+println customFieldSpecificationCodEstabelecimentoInstance.errors
+
+def contractInstance = new Contract()
+contractInstance.status = "ENABLED"
+contractInstance.addToOpeningHoursGroup(OpeningHoursGroup.findByName("MON-FRI 08h/18h"))
+
+println contractInstance.validate()
+contractInstance.save() // return id
+println contractInstance.errors
+
+contractorInstance.addToContracts(contractInstance)
+println contractorInstance.save()
+println contractorInstance.errors
+
+// expected
+// true 
+// Rua Capitão Montanha 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// BANRISUL 
+// grails.validation.ValidationErrors: 0
+// true 
+// [EQUIPMENT] Cód. Rede -> \d{11} (REQUIRED) 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// [EQUIPMENT] Cód. Estabelecimento -> \d{15} (REQUIRED) 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// grails.validation.ValidationErrors: 0 errors 
+// BANRISUL 
+// grails.validation.ValidationErrors: 0 errors

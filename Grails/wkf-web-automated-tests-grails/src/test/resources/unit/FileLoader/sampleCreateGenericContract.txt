@@ -1,0 +1,154 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+
+def stockLevelPlannedStockInDays = AppConfig.findByCode('stock.level.a.planned.stock.days').value as Integer
+def stockLevelRequestPointDays = AppConfig.findByCode('stock.level.b.request.point.days').value as Integer
+def stockLevelSafetyStockDays = AppConfig.findByCode('stock.level.c.safety.stock.days').value as Integer
+def stockLevelBadReturn = AppConfig.findByCode('stock.level.d.bad.return').value as Integer
+
+def allOpeningHoursGroups = OpeningHoursGroup.all
+def openingHoursGroups = [:]
+allOpeningHoursGroups.each {
+    openingHoursGroups[it.name] = it
+}
+
+def serviceGroups = [:]
+ServiceGroup.where{status == 'ENABLED'}.each{
+    serviceGroups[it.name] = it
+}
+
+def workflows = [:]
+WorkflowType.values().each {
+    workflows[(it)] = [:]
+}
+Workflow.where{status == 'ENABLED'}.each{
+    workflows[it.workflowType][it.name] = it
+}
+
+def serviceLevelAgreementGroups = [:]
+ServiceLevelAgreementGroup.where{status == 'ENABLED'}.each{
+    serviceLevelAgreementGroups[it.name] = it
+}
+
+[
+    [name:'Contrato Generico', services: [
+        [
+            group:'Instalação',
+            workflow:'Instalação',
+            allowsCreateEquipmentOnServiceOrder:true,
+            onlyEquipmentFromServiceProviderStockOnServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Banrisul (Instalação e Troca de Tecnologia)',
+            name:'Instalação Venda'
+        ],
+
+        [
+            group:'Desinstalação',
+            workflow:'Desinstalação',
+            allowsCreateEquipmentOnServiceOrder:true,
+            onlyEquipmentFromCustomerAtServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Banrisul (Instalação e Troca de Tecnologia)',
+            name:'Desinstalação'
+        ],
+
+        [
+            group:'Reconfiguração',
+            workflow:'Reconfiguração',
+            allowsCreateEquipmentOnServiceOrder:true,
+            onlyNewEquipmentFromServiceProviderStockOnServiceOrder:true,
+            onlyEquipmentFromCustomerAtServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Banrisul (Demais Serviços)',
+            name:'Reconfiguração'
+        ],
+
+        [
+            group:'Troca de Tecnologia',
+            workflow:'Troca de Tecnologia',
+            allowsCreateEquipmentOnServiceOrder:true,
+            allowsCreateNewEquipmentOnServiceOrder:true,
+            onlyNewEquipmentFromServiceProviderStockOnServiceOrder:true,
+            onlyEquipmentFromCustomerAtServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Banrisul (Instalação e Troca de Tecnologia)',
+            name:'Troca de Tecnologia (Geral)'
+        ],
+
+        [
+            group:'Manutenção',
+            workflow:'Manutenção',
+            allowsCreateEquipmentOnServiceOrder:true,
+            onlyNewEquipmentFromServiceProviderStockOnServiceOrder:true,
+            onlyEquipmentFromCustomerAtServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Banrisul (Demais Serviços)',
+            name:'Manutenção'
+        ],
+
+        [
+            group:'Rollout',
+            workflow:'Atualização de Software',
+            allowsCreateEquipmentOnServiceOrder:true,
+            onlyNewEquipmentFromServiceProviderStockOnServiceOrder:true,
+            onlyEquipmentFromCustomerAtServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Ticket (Locação e Instalação)',
+            name:'Atualização de Software'
+        ],
+
+        [
+            group:'Cancelamento',
+            workflow:'Cancelamento',
+            allowsCreateEquipmentOnServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Ticket (Locação e Instalação)',
+            name:'Cancelamento'
+        ]
+    ]]
+
+].each {
+
+    def contractInstance = new Contract(status: 'ENABLED',
+                                  contractType: ContractType.GENERIC,
+                                          name: it.name,
+                             openingHoursGroup: allOpeningHoursGroups)
+    contractInstance.save()
+    println "${contractInstance} (${contractInstance.errors})"
+
+    def stockLevelInstance = new StockLevel(contract: contractInstance,
+                   				  plannedStockInDays: stockLevelPlannedStockInDays,
+				                    requestPointDays: stockLevelRequestPointDays,
+				                     safetyStockDays: stockLevelSafetyStockDays,
+						                   badReturn: stockLevelBadReturn)
+    stockLevelInstance.save()
+    println "${stockLevelInstance} (${stockLevelInstance.errors})"
+
+    it.services.each { service ->
+        def openingHoursGroup = openingHoursGroups[service.openingHoursGroup]
+        def serviceGroupInstance = serviceGroups[service.group]
+        def workflowInstance = workflows[serviceGroupInstance.workflowType][service.workflow]
+        def serviceLevelAgreementGroup = serviceLevelAgreementGroups[service.serviceLevelAgreementGroup]
+        def serviceInstance = new ServiceOffered(status: 'ENABLED',
+                                            name: service.name,
+                                        contract: contractInstance,
+                                    serviceGroup: serviceGroupInstance,
+                                        workflow: workflowInstance,
+                               openingHoursGroup: openingHoursGroup,
+                      serviceLevelAgreementGroup: serviceLevelAgreementGroup)
+
+        ['allowsCreateEquipmentOnServiceOrder',
+        'allowsCreateNewEquipmentOnServiceOrder',
+        'onlyEquipmentFromServiceProviderStockOnServiceOrder',
+        'onlyNewEquipmentFromServiceProviderStockOnServiceOrder',
+        'onlyEquipmentFromCustomerAtServiceOrder',
+        'onlyNewEquipmentFromCustomerAtServiceOrder',
+        'generateConsumptionInStock'].each { option ->
+            if(service[option]) {
+                serviceInstance."${option}" = option
+            }
+        }
+        serviceInstance.save()
+        println "${serviceInstance} (${serviceInstance.errors})"
+    }
+}

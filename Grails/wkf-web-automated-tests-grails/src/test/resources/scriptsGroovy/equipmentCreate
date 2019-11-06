@@ -1,0 +1,60 @@
+import br.com.careman.domain.*
+import br.com.isolutions.enums.*
+import br.com.careman.groovy.enums.Situation
+import br.com.careman.groovy.enums.HistorySource
+
+def contractorAlias = "%contractorAlias%"
+def documentType = "%documentType%"
+def documentNumber = "%documentNumber%"
+def serviceProviderName = "%serviceProviderName%"
+def manufacturerName = "%manufacturerName%"
+def modelName = "%modelName%"
+def situation = Situation.%situation%
+def serialNumber = "%serialNumber%"
+def quantity = %quantity%
+def po = "%po%"
+def si = "%si%"
+def typeOfEquipmentAvailabilityName = "%typeOfEquipmentAvailability%"
+def equipmentConditionName = "%equipmentCondition%"
+boolean inventoried = %inventoried%
+
+def contractor = Contractor.findByAlias(contractorAlias)
+def customer = Customer.findByDocumentTypeAndDocumentNumber(documentType, documentNumber)
+def serviceProvider = ServiceProvider.findByName(serviceProviderName)
+def manufacturer = Manufacturer.findByName(manufacturerName)
+def model = Model.findByName(modelName)
+def user = User.findByUsername("admin")
+def typeOfEquipmentAvailability = TypeOfEquipmentAvailability.findByName(typeOfEquipmentAvailabilityName)
+def equipmentCondition = EquipmentCondition.findByName(equipmentConditionName)
+
+Equipment.withTransaction {
+    
+def equipment = new Equipment(
+	model: model,
+    status: 'ENABLED',
+    situation: situation,
+    contractor: contractor,
+    customer: customer,
+    serviceProvider: serviceProvider,
+    manufacturer: manufacturer,
+    serialNumber: serialNumber,
+    inventoried: inventoried,
+    quantity: quantity,
+    PO: po,
+    SI: si,
+    typeOfEquipmentAvailability: typeOfEquipmentAvailability,
+    equipmentCondition: equipmentCondition
+)
+
+equipment.createdByUser = user
+
+def stockManagementService = ctx.getBean('stockManagementService')   
+
+println stockManagementService.saveEquipment(equipment, [
+        operationSource          : OperationSource.MANUAL,
+        operationSourceIdentifier: null,
+        operationDate            : new Date(),
+        historySource            : HistorySource.WEB,
+        operationBy              : user
+    ])
+}

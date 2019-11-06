@@ -1,0 +1,59 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "Avenida Ibirapuera"
+addressInstance.number = "2332"
+addressInstance.complement = ""
+addressInstance.district = "Moema"
+addressInstance.zipCode = "04028002"
+addressInstance.city = City.findByNameAndState("São Paulo", State.findByName("São Paulo"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def serviceProvider = new ServiceProvider(address: addressInstance)
+serviceProvider.hq = true
+serviceProvider.documentType = "CNPJ"
+serviceProvider.documentNumber = "58454463000103"
+serviceProvider.alias = "Help Desk"
+serviceProvider.contactName = "Silvio"
+serviceProvider.status = "ENABLED"
+serviceProvider.name = "Novtis do Brasil"
+serviceProvider.email = "silvio.alexandre@novtis.com.br"
+serviceProvider.phoneNumber = "1135889090"
+serviceProvider.type = "HELP_DESK"
+
+println serviceProvider.validate()
+println serviceProvider.save()
+println serviceProvider.errors
+
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Cancelamento"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Carga de Software"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Desinstalação"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Instalação"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Manutenção"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Reconfiguração"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Reincidência"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Troca de Tecnologia"))
+
+serviceProvider.addToContractors(Contractor.findByAlias("BANRISUL"))
+serviceProvider.addToContractors(Contractor.findByAlias("POSNET"))
+serviceProvider.addToContractors(Contractor.findByAlias("CABAL"))
+serviceProvider.addToContractors(Contractor.findByAlias("TICKET"))
+
+println serviceProvider.validate()
+println serviceProvider.save()
+println serviceProvider.errors
+
+// expected
+// true 
+// Avenida Ibirapuera 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Help Desk 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Help Desk 
+// grails.validation.ValidationErrors: 0 errors

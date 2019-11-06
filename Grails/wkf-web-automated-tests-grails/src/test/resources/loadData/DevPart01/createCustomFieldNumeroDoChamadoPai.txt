@@ -1,0 +1,19 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+    
+def customFieldInstance = new CustomField(name: "Numero do chamado Pai", status: "ENABLED", type: CustomFieldType.SERVICE_ORDER, kind: CustomFieldKind.REGEX, pattern: "\\d{5,10}")
+customFieldInstance.addToServiceGroups(ServiceGroup.findByName("Manutenção"))
+println customFieldInstance.validate()
+println customFieldInstance.save()
+println customFieldInstance.type
+println customFieldInstance.kind
+println customFieldInstance.pattern
+println customFieldInstance.serviceGroups
+
+// expected
+// true
+// Numero do chamado Pai
+// SERVICE_ORDER
+// REGEX
+// \\d{5,10}
+// [Manutenção]

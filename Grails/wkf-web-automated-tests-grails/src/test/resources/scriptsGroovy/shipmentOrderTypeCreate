@@ -1,0 +1,21 @@
+import br.com.careman.domain.*
+
+def shipmentOrderType =	new ShipmentOrderType(
+		    name: "%name%", 
+        	status: "ENABLED",
+        	workflow: Workflow.findByName("%workflow%"),
+        	template: Template.findByName("%template%"),
+        	typeOfEquipmentAvailabilitys: TypeOfEquipmentAvailability.findByName("%typeOfEquipmentAvailabilitys%"),
+        	equipmentConditions: EquipmentCondition.findByName("%equipmentConditions%"),
+        	keepEquipmentsAtShipmentOrderFrom: %keepEquipmentsAtShipmentOrderFrom%,
+        	allowedOnlyEquipmentInPromiseOfEquipmentType: %allowedOnlyEquipmentInPromiseOfEquipmentType%,
+        	promiseOfEquipmentTypeQuantityRestrict: %promiseOfEquipmentTypeQuantityRestrict%,
+        	blockAddEquipmentUntilPromiseOfEquipmentNotConfig: %blockAddEquipmentUntilPromiseOfEquipmentNotConfig%,
+        	promiseOfEquipmentType: "%promiseOfEquipmentType%")
+        	        
+	if (shipmentOrderType.validate()) {
+		shipmentOrderType.save(failOnError: true, flush: true)
+    	println shipmentOrderType.id
+	} else {
+		println shipmentOrderType.errors
+	}

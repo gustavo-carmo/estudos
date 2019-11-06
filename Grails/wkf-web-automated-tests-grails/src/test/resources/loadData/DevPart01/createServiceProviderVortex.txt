@@ -1,0 +1,52 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "Manuel Ugarte"
+addressInstance.number = "1650"
+addressInstance.complement = ""
+addressInstance.district = "Centro"
+addressInstance.zipCode = "C1428BRD"
+addressInstance.city = City.findByNameAndState("Buenos Aires", State.findByName("Buenos Aires"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def serviceProvider = new ServiceProvider(address: addressInstance)
+serviceProvider.hq = true
+serviceProvider.tenant = true
+serviceProvider.documentType = "CUIT"
+serviceProvider.documentNumber = "30709395382"
+serviceProvider.alias = "Vortex"
+serviceProvider.contactName = "Vortex"
+serviceProvider.status = "ENABLED"
+serviceProvider.name = "Vortex7 S.A."
+serviceProvider.email = "info@vortex7.com.ar"
+serviceProvider.phoneNumber = "541147817700"
+serviceProvider.type = "LABORATORY"
+
+println serviceProvider.validate()
+println serviceProvider.save()
+println serviceProvider.errors
+
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Reparacion en Laboratorio"))
+
+serviceProvider.addToContractors(Contractor.findByAlias("POSNET"))
+serviceProvider.addToContractors(Contractor.findByAlias("CABAL"))
+serviceProvider.addToContractors(Contractor.findByAlias("TICKET"))
+
+println serviceProvider.validate()
+println serviceProvider.save()
+println serviceProvider.errors
+
+// expected
+// true 
+// Manuel Ugarte
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Vortex
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Vortex 
+// grails.validation.ValidationErrors: 0 errors

@@ -1,0 +1,2 @@
+contractorAlias,name,alias,documentType,documentNumber,phoneNumber,email,status,contactName,address,addressNumber,addressDetail,addressDistrict,zipCode,stateName,cityName,notes
+CONTRACTOR_GENERIC,Import_Consumer_All_Requirements_Success,Import_Consumer_All_Requirements_Success,CNPJ,81534244000156,1196328547,consumer_all_requirement@email.com,ENABLED,Import_Consumer_All_Requirements_Success,Av. Testes,98,Frente,Distrito_Teste,98741025,Rio de Janeiro,Rio de Janeiro,novo cliente

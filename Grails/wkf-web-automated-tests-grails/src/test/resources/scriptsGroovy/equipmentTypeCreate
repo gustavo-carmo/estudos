@@ -1,0 +1,9 @@
+import br.com.careman.domain.*
+
+new EquipmentType(
+
+    name: "%name%", 
+    family: Family.findByName("%family%"), 
+    code: "%code%"
+    
+).save(failOnError: true, flush:true)

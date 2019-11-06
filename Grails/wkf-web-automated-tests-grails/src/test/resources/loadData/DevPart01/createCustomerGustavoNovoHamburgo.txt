@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 16"
+addressInstance.number = ""
+addressInstance.district = ""
+addressInstance.zipCode = "91523133"
+addressInstance.city = City.findByNameAndState("Novo Hamburgo", State.findByName("Rio Grande do Sul"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("BANRISUL")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "63766854000101"
+customerInstance.contactName = ""
+// customerInstance.alias = ""
+customerInstance.name = "Gustavo Novo Hamburgo"
+customerInstance.email = ""
+customerInstance.phoneNumber = "34959530"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 16
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Gustavo Novo Hamburgo - 63.766.854/0001-01
+// grails.validation.ValidationErrors: 0 errors

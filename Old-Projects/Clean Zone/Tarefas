@@ -1,0 +1,23 @@
+Tarefas
+    Estrutura inicial
+        Cliente html
+        Servidor
+    Login
+        Cenário
+        Doc API
+        Interface HTML
+        Implementar BACKEND
+        Integrar Interface HTML + BACKEND
+    2.0 - Esqueci a Senha;
+    3.0 - Recuperar a Senha;
+    4.0 - Home Page;
+    5.0 - Gerenciar Usuarios;
+        5.1 - Cadastro;
+        5.2 - Detalhes;
+            5.2.1 - Permissões;
+            5.2.2 - Detalhes;
+        5.3 - Editar;
+        5.4 - Pesquisar;
+    6.0 - Perfil;
+        6.1 - Trocar a senha;
+        6.2 - Perfil;

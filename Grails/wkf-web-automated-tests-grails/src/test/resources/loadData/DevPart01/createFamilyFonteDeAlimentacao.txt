@@ -1,0 +1,14 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def familyInstance = new Family()
+familyInstance.name = "Fonte de Alimentação"
+familyInstance.status = "ENABLED"
+println familyInstance.validate()
+println familyInstance.save()
+println familyInstance.errors
+
+// expected
+// true
+// Fonte de Alimentação
+// grails.validation.ValidationErrors: 0 errors

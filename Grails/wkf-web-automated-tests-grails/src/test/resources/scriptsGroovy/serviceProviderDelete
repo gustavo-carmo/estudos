@@ -1,0 +1,3 @@
+import br.com.careman.domain.*
+	
+	ServiceProvider.findByAlias("%alias%").delete(failOnError: true, flush: true)

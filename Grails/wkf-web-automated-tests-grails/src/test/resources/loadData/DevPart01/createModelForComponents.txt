@@ -1,0 +1,26 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+
+def itens = []
+itens << [name: "ST763A", status: "ENABLED", type: "COMPONENT", mask: "", pattern: "", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Sin datos"), family: Family.findByName("POS - Componentes"), consumable: false, description: "3.3V STEP DWN CURR MODE PWM DC-DC CONV"]
+itens << [name: "ST3232ECTR", status: "ENABLED", type: "COMPONENT", mask: "", pattern: "", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Sin datos"), family: Family.findByName("POS - Componentes"), consumable: false, description: "RS-232 DRIVERS AND RECEIVERS"]
+itens << [name: "CAP 100UF6V3(SMD)", status: "ENABLED", type: "COMPONENT", mask: "", pattern: "", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Sin datos"), family: Family.findByName("POS - Componentes"), consumable: false, description: "CAPACITOR 100uF 6V3 (SMD)"]
+
+itens.each {
+def modelInstance = new Model()
+modelInstance.properties = it
+println modelInstance.validate()
+println modelInstance.save()
+println modelInstance.errors
+}
+
+// expected
+// true 
+// ST763A 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// ST3232ECTR 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// CAP 100UF6V3(SMD) 
+// grails.validation.ValidationErrors: 0 errors

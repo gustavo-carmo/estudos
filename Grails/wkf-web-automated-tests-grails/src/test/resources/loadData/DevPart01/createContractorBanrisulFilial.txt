@@ -1,0 +1,47 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "Avenida Paulista"
+addressInstance.number = "2381"
+addressInstance.complement = ""
+addressInstance.district = "Consolação"
+addressInstance.zipCode = "01311300"
+addressInstance.city = City.findByNameAndState("São Paulo", State.findByName("São Paulo"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def contractorInstance = new Contractor(address: addressInstance)
+contractorInstance.headquarters = Contractor.findByAlias("BANRISUL")
+contractorInstance.documentType = "CNPJ"
+contractorInstance.documentNumber = "00398022000232"
+contractorInstance.alias = "BANRISUL Filial SP"
+contractorInstance.contactName = "Banrisul Paulista"
+contractorInstance.status = "ENABLED"
+contractorInstance.name = "Banco do Estado do Rio Grande do Sul S/A"
+contractorInstance.email = "barisulsp@barisulsp.com.br"
+contractorInstance.phoneNumber = "511121881515"
+
+println contractorInstance.validate()
+println contractorInstance.save()
+println contractorInstance.errors
+
+def contractInstance = new Contract()
+contractInstance.status = "ENABLED"
+contractInstance.addToOpeningHoursGroup(OpeningHoursGroup.findByName("MON-FRI 08h/18h"))
+
+println contractInstance.validate()
+contractInstance.save() // return id
+println contractInstance.errors
+
+// expected
+// true
+// Avenida Paulista 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// BANRISUL Filial SP 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// grails.validation.ValidationErrors: 0 errors

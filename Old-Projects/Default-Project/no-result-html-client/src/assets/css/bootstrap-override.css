@@ -1,0 +1,28 @@
+.panel {
+  border-radius: 0px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  margin-bottom: 15px;
+}
+
+.page-header {
+  padding-top: 5px;
+  padding-bottom: 0;
+}
+
+.panel-heading {
+  border-bottom: 1px solid #f1f1f1;
+}
+
+@media (min-width: 992px) {
+  .page-header {
+    margin: 0 0 20px 10px;
+  }
+}
+
+h1, .h1, h2, .h2, h3, .h3 {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+
+

@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 21"
+addressInstance.number = ""
+addressInstance.district = ""
+addressInstance.zipCode = "08021170"
+addressInstance.city = City.findByNameAndState("São Paulo", State.findByName("São Paulo"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("BANRISUL")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "44333547000184"
+customerInstance.contactName = ""
+// customerInstance.alias = ""
+customerInstance.name = "Giovanderson São Paulo"
+customerInstance.email = ""
+customerInstance.phoneNumber = "32212011"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 21
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Giovanderson São Paulo - 44.333.547/0001-84
+// grails.validation.ValidationErrors: 0 errors

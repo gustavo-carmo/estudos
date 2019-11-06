@@ -1,0 +1,52 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "Rua Bela Cintra"
+addressInstance.number = "1149"
+addressInstance.complement = "5º Andar"
+addressInstance.district = "Consolação"
+addressInstance.zipCode = "01415001"
+addressInstance.city = City.findByNameAndState("São Paulo", State.findByName("São Paulo"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def contractorInstance = new Contractor(address: addressInstance)
+contractorInstance.documentType = "CNPJ"
+contractorInstance.documentNumber = "47866934000174"
+contractorInstance.alias = "TICKET"
+contractorInstance.contactName = "Marco"
+contractorInstance.status = "ENABLED"
+contractorInstance.name = "TICKET SERVIÇOS SA"
+contractorInstance.email = "preencher@tefti.com.br"
+contractorInstance.phoneNumber = "1155555555"
+
+println contractorInstance.validate()
+println contractorInstance.save()
+println contractorInstance.errors
+
+def contractInstance = new Contract()
+contractInstance.status = "ENABLED"
+contractInstance.addToOpeningHoursGroup(OpeningHoursGroup.findByName("MON-FRI 08h/18h"))
+
+println contractInstance.validate()
+contractInstance.save() // return id
+println contractInstance.errors
+
+contractorInstance.addToContracts(contractInstance)
+println contractorInstance.save()
+println contractorInstance.errors
+
+// expected
+// true
+// Rua Bela Cintra
+// grails.validation.ValidationErrors: 0 errors
+// true 
+// TICKET 
+// grails.validation.ValidationErrors: 0 errors
+// true 
+// grails.validation.ValidationErrors: 0 errors 
+// TICKET 
+// grails.validation.ValidationErrors: 0 errors

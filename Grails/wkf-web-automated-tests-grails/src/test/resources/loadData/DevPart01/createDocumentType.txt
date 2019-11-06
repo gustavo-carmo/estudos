@@ -1,0 +1,16 @@
+import br.com.careman.domain.*
+
+def contractorDocumentTypes = AppConfig.get(13)
+contractorDocumentTypes.value = "[1, 2, 3]"
+println contractorDocumentTypes.validate() // expected true
+println contractorDocumentTypes.save() // expected br.com.careman.domain.AppConfig : 13
+
+def customerDocumentTypes = AppConfig.get(14)
+customerDocumentTypes.value = "[1, 2, 3]"
+println customerDocumentTypes.validate() // expected true
+println customerDocumentTypes.save() // expected br.com.careman.domain.AppConfig : 14
+
+def serviceProviderDocumentTypes = AppConfig.get(15)
+serviceProviderDocumentTypes.value = "[1, 2, 3]"
+println serviceProviderDocumentTypes.validate() // expected true
+println serviceProviderDocumentTypes.save() // expected br.com.careman.domain.AppConfig : 15

@@ -1,0 +1,7 @@
+import br.com.careman.domain.*
+
+	new WarrantyProvider(
+		    name: "%name%", 
+        	warrantyType: "%warrantyType%", 
+		    days: "%days%",
+        ).save(failOnError: true)

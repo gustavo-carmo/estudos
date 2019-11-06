@@ -1,0 +1,34 @@
+
+import br.com.careman.domain.*
+
+Contract contract = Contractor.findByName("%contractor%").contract;
+
+List<Model> models = new ArrayList<>();
+["%models%"].each {
+	models.add(Model.findByName(it));
+}
+
+if (!contract) {
+ contract = new Contract(
+        status: "ENABLED",
+        name: null,
+        openingHoursGroup: OpeningHoursGroup.findByName("%oph_group%"),
+        models: models
+	).save(failOnError: true, flush: true)
+}
+
+def service = new ServiceOffered()
+service.status = 'ENABLED'
+service.name = "%name%"
+service.contract = contract
+service.serviceGroup = ServiceGroup.findByName("%serviceGroup%")
+service.workflow = Workflow.findByName("%workflow%")
+service.openingHoursGroup = OpeningHoursGroup.findByName("%oph_group%")
+
+/****/
+
+service.save(failOnError: true, flush: true)
+
+if (!Contractor.findByName("%contractor%").contract) {
+	Contractor.findByName("%contractor%").addToContracts(contract).save(failOnError: true, flush: true)
+}

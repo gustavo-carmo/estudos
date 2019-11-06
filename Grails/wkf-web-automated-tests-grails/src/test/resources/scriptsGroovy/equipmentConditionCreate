@@ -1,0 +1,7 @@
+import br.com.careman.domain.*
+
+new EquipmentCondition(
+    name: "%name%", 
+    situation: "%situation%", 
+    code: "%code%"
+).save(failOnError: true, flush:true)

@@ -1,0 +1,3 @@
+import br.com.careman.domain.*
+
+	Contract.findById(%id%).delete(failOnError: true, flush: true)

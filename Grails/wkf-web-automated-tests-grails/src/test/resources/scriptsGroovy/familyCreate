@@ -1,0 +1,3 @@
+import br.com.careman.domain.*
+
+	new Family(name: "%name%", status: 'ENABLED').save(failOnError: true, flush: true)

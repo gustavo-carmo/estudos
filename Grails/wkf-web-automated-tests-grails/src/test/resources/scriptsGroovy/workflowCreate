@@ -1,0 +1,8 @@
+import br.com.careman.domain.*
+import static br.com.careman.groovy.enums.WorkflowType.*
+
+new Workflow(
+    status: 'ENABLED', 
+    workflowType: %workflowType%, 
+    name: "%name%"
+).save(failOnError: true, flush:true)

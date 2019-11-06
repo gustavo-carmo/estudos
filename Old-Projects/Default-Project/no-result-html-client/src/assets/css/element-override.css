@@ -1,0 +1,23 @@
+div.el-form-item label.el-form-item__label {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  font-size: 90%;
+}
+
+div.el-form-item {
+  margin-bottom: 12px;
+}
+
+.el-table thead>tr>th, .el-table th>.cell {
+  background-color: inherit;
+}
+
+div.el-input-number {
+  width: 100%;
+}
+
+div.el-date-editor.el-input.el-date-editor--date,
+div.el-date-editor.el-input.el-date-editor--time-select,
+div.el-date-editor.el-input.el-date-editor--datetime {
+  width: 100%;
+}

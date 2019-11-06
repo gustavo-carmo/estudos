@@ -1,0 +1,38 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+import static br.com.careman.groovy.enums.StateRegion.*
+import static br.com.careman.groovy.enums.ServiceLevelAgreementCriterion.*
+import static br.com.careman.groovy.enums.ServiceLevelAgreementDistanceFromCapitalType.*
+import static br.com.careman.groovy.enums.ServiceLevelAgreementTermType.*
+import static br.com.careman.groovy.enums.ServiceLevelAgreementTermTypeDetail.*
+
+def SLAGroupInstance = new ServiceLevelAgreementGroup(status:'ENABLED', name:'SLA Ticket (Manutenção)')
+[
+
+ [criterion: DISTANCE_FROM_CAPITAL, distanceFromCapital: [type: UNTIL,        value: 50],  term:12, spTerm:10],
+ [criterion: DISTANCE_FROM_CAPITAL, distanceFromCapital: [type: UNTIL,        value: 150], term:24, spTerm:20],
+ [criterion: DISTANCE_FROM_CAPITAL, distanceFromCapital: [type: UNTIL,        value: 300], term:36, spTerm:30],
+ [criterion: DISTANCE_FROM_CAPITAL, distanceFromCapital: [type: GREATER_THAN, value: 300], term:60, spTerm:50],
+
+ [criterion: CAPITAL, term:12, spTerm:10]
+].each {
+
+    SLAGroupInstance.addToSla(ServiceLevelAgreement.build(criterion: it.criterion,
+                                                distanceFromCapital: it.distanceFromCapital,
+                                                               term: [value: it.term, type: DAYS, detail: WORKING_DAY],
+                                                serviceProviderTerm: [value: it.spTerm]))
+}
+
+SLAGroupInstance.save()
+println "${SLAGroupInstance} (${SLAGroupInstance.errors})"
+println SLAGroupInstance.sla.collect{"${it.toString()} (${it.errors})"}.sort().join('\n')
+
+// Expected
+/*
+    SLA Ticket (Manutenção) (grails.validation.ValidationErrors: 0 errors)
+    CAPITAL: 12 WORKING_DAY, SP: 10 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    DISTANCE_FROM_CAPITAL (GREATER_THAN 300 km): 60 WORKING_DAY, SP: 50 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    DISTANCE_FROM_CAPITAL (UNTIL 150 km): 24 WORKING_DAY, SP: 20 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    DISTANCE_FROM_CAPITAL (UNTIL 300 km): 36 WORKING_DAY, SP: 30 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+    DISTANCE_FROM_CAPITAL (UNTIL 50 km): 12 WORKING_DAY, SP: 10 WORKING_DAY (grails.validation.ValidationErrors: 0 errors)
+*/

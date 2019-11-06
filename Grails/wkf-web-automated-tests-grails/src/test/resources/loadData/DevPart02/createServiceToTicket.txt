@@ -1,0 +1,145 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.WorkflowType
+
+def contractors = [:]
+Contractor.where{alias in ['TICKET'] && status == 'ENABLED'}.each{
+    def openingHoursGroups = [:]
+    it.contract.openingHoursGroup.each { group ->
+        openingHoursGroups[group.name] = group
+    }
+    contractors[it.alias] = [contract:it.contract, openingHoursGroups:openingHoursGroups]
+}
+
+def serviceGroups = [:]
+ServiceGroup.where{status == 'ENABLED'}.each{
+    serviceGroups[it.name] = it
+}
+
+def workflows = [:]
+WorkflowType.values().each {
+    workflows[(it)] = [:]
+}
+Workflow.where{status == 'ENABLED'}.each{
+    workflows[it.workflowType][it.name] = it
+}
+
+def serviceLevelAgreementGroups = [:]
+ServiceLevelAgreementGroup.where{status == 'ENABLED'}.each{
+    serviceLevelAgreementGroups[it.name] = it
+}
+
+[
+    [contractor:'TICKET', services: [
+        [
+            group:'Instalação',
+            workflow:'Instalação',
+            allowsCreateEquipmentOnServiceOrder:true,
+            onlyEquipmentFromServiceProviderStockOnServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Banrisul (Instalação e Troca de Tecnologia)',
+            name:'Instalação Geral'
+        ],
+
+        [
+            group:'Manutenção',
+            workflow:'Manutenção',
+            allowsCreateEquipmentOnServiceOrder:true,
+            allowsCreateNewEquipmentOnServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Ticket (Manutenção)',
+            name:'Manutenção'
+        ],
+
+        [
+            group:'Desinstalação',
+            workflow:'Desinstalação',
+            allowsCreateEquipmentOnServiceOrder:true,
+            allowsCreateNewEquipmentOnServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Ticket (Locação e Instalação)',
+            name:'Desinstalação'
+        ],
+
+        [
+            group:'Troca de Tecnologia',
+            workflow:'Troca de Tecnologia',
+            allowsCreateEquipmentOnServiceOrder:true,
+            allowsCreateNewEquipmentOnServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Ticket (Locação e Instalação)',
+            name:'Troca de Tecnologia (Geral)'
+        ],
+
+        [
+            group:'Reincidência',
+            workflow:'Manutenção',
+            allowsCreateEquipmentOnServiceOrder:true,
+            allowsCreateNewEquipmentOnServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Ticket (Manutenção)',
+            name:'Reincidência'
+        ],
+
+        [
+            group:'Carga de Software',
+            workflow:'Manutenção',
+            allowsCreateEquipmentOnServiceOrder:true,
+            allowsCreateNewEquipmentOnServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Ticket (Manutenção)',
+            name:'Carga de Software'
+        ],
+
+        [
+            group:'Reconfiguração',
+            workflow:'Manutenção',
+            allowsCreateEquipmentOnServiceOrder:true,
+            allowsCreateNewEquipmentOnServiceOrder:true,
+            openingHoursGroup:'MON-FRI 08h/18h',
+            serviceLevelAgreementGroup:'SLA Ticket (Manutenção)',
+            name:'Reconfiguração'
+        ]
+    ]]
+
+].each {
+
+    def contractInstance = contractors[it.contractor].contract
+    it.services.each { service ->
+
+        def openingHoursGroup = contractors[it.contractor].openingHoursGroups[service.openingHoursGroup]
+        def serviceGroupInstance = serviceGroups[service.group]
+        def workflowInstance = workflows[serviceGroupInstance.workflowType][service.workflow]
+        def serviceLevelAgreementGroup = serviceLevelAgreementGroups[service.serviceLevelAgreementGroup]
+        def serviceInstance = new ServiceOffered(status: 'ENABLED',
+                                            name: service.name,
+                                        contract: contractInstance,
+                                    serviceGroup: serviceGroupInstance,
+                                        workflow: workflowInstance,
+                               openingHoursGroup: openingHoursGroup,
+                      serviceLevelAgreementGroup: serviceLevelAgreementGroup)
+
+        ['allowsCreateEquipmentOnServiceOrder',
+        'allowsCreateNewEquipmentOnServiceOrder',
+        'onlyEquipmentFromServiceProviderStockOnServiceOrder',
+        'onlyNewEquipmentFromServiceProviderStockOnServiceOrder',
+        'onlyEquipmentFromCustomerAtServiceOrder',
+        'onlyNewEquipmentFromCustomerAtServiceOrder',
+        'generateConsumptionInStock'].each { option ->
+            if(service[option]) {
+                serviceInstance."${option}" = option
+            }
+        }
+        serviceInstance.save()
+        println "${serviceInstance} (${serviceInstance.errors})"
+    }
+}
+
+/*
+    Instalação Geral (grails.validation.ValidationErrors: 0 errors)
+    Manutenção (grails.validation.ValidationErrors: 0 errors)
+    Desinstalação (grails.validation.ValidationErrors: 0 errors)
+    Troca de Tecnologia (Geral) (grails.validation.ValidationErrors: 0 errors)
+    Reincidência (grails.validation.ValidationErrors: 0 errors)
+    Carga de Software (grails.validation.ValidationErrors: 0 errors)
+    Reconfiguração (grails.validation.ValidationErrors: 0 errors)
+*/

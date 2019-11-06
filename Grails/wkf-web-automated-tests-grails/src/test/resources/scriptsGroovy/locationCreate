@@ -1,0 +1,8 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.*
+
+	new Location(
+		name: "%name%", 
+		serviceProvider: ServiceProvider.findByName("%serviceProvider%"), 
+		status: 'ENABLED'
+	).save(failOnError: true, flush: true)

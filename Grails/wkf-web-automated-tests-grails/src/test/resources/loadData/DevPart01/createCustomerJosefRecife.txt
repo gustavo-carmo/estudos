@@ -1,0 +1,36 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "RUA 22"
+addressInstance.number = ""
+addressInstance.district = ""
+addressInstance.zipCode = "91000133"
+addressInstance.city = City.findByNameAndState("Recife", State.findByName("Pernambuco"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def customerInstance = new Customer(address: addressInstance)
+customerInstance.contractor = Contractor.findByAlias("BANRISUL")
+customerInstance.status = "ENABLED"
+customerInstance.documentType = "CNPJ"
+customerInstance.documentNumber = "17833290000157"
+customerInstance.contactName = ""
+// customerInstance.alias = ""
+customerInstance.name = "Josef Recife"
+customerInstance.email = ""
+customerInstance.phoneNumber = "34651128"
+
+println customerInstance.validate()
+println customerInstance.save()
+println customerInstance.errors
+
+// expected
+// true
+// RUA 22
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Josef Recife - 17.833.290/0001-57
+// grails.validation.ValidationErrors: 0 errors

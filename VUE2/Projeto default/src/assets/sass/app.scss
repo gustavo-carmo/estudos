@@ -1,0 +1,26 @@
+// @import "variables";
+
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+
+// ad
+// $brand-primary: #2494F2;
+$font-size-base: 14px;
+// $btn-default-color: #fff;
+// $btn-default-bg: #2494F2;
+
+
+// colormaq
+// $btn-default-color: #fff !default; // btn-text
+// $btn-default-bg: #072A66 !default;
+
+//@import "bootswatch/cosmo/variables";
+@import "bootswatch/paper/variables";
+//@import "bootswatch/simplex/variables";
+
+@import "bootstrap";
+
+//@import "bootswatch/cosmo/bootswatch";
+@import "bootswatch/paper/bootswatch";
+//@import "bootswatch/simplex/bootswatch";
+
+

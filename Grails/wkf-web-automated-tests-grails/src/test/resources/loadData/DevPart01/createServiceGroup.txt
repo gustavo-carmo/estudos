@@ -1,0 +1,45 @@
+import br.com.careman.domain.*
+    
+["Instalação", "Manutenção", "Desinstalação", "Reconfiguração", "Cancelamento", "Troca de Tecnologia", "Reincidência", "Carga de Software", "Rollout"].each {
+    def serviceGroupInstance = new ServiceGroup(name: it, status: "ENABLED", type: "FIELD")
+    println serviceGroupInstance.validate()
+    println serviceGroupInstance.save()    
+    println serviceGroupInstance.type
+}
+
+def serviceGroupInstanceLaboratory = new ServiceGroup(name: "Reparacion en Laboratorio", status: "ENABLED", type: "LABORATORY")
+println serviceGroupInstanceLaboratory.validate()
+println serviceGroupInstanceLaboratory.save()
+println serviceGroupInstanceLaboratory.type
+
+// Expected
+// true
+// Instalação
+// FIELD
+// true
+// Manutenção
+// FIELD
+// true
+// Desinstalação
+// FIELD
+// true
+// Reconfiguração
+// FIELD
+// true
+// Cancelamento
+// FIELD
+// true
+// Troca de Tecnologia
+// FIELD
+// true
+// Reincidência
+// FIELD
+// true
+// Carga de Software
+// FIELD
+// true
+// Rollout
+// FIELD
+// true
+// Reparacion en Laboratorio
+// LABORATORY

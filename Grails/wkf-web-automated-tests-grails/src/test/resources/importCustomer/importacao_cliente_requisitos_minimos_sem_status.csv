@@ -1,0 +1,2 @@
+contractorAlias,name,alias,documentType,documentNumber,phoneNumber,status,address,zipCode,stateName,cityName
+CONTRACTOR_GENERIC,Import_Consumer_Without_status,Import_Consumer_Without_status,CNPJ,70356140000182,9196328547,,Av. Teste,45789657,Rio de Janeiro,Rio de Janeiro

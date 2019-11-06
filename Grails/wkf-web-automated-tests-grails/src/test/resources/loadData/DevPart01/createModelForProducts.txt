@@ -1,0 +1,70 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+
+def itens = []
+
+itens <<  [name: "BANJO", status: "ENABLED", type: "PRODUCT", mask: "9999999999", pattern: "[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "I5100", status: "ENABLED", type: "PRODUCT", mask: "9999999999", pattern: "[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "I8200", status: "ENABLED", type: "PRODUCT", mask: "9999999999", pattern: "[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "I7910", status: "ENABLED", type: "PRODUCT", mask: "9999999999", pattern: "[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "ACQUA", status: "ENABLED", type: "PRODUCT", mask: "9999999999", pattern: "[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "EFT930G", status: "ENABLED", type: "PRODUCT", mask: "99999PT99999999", pattern: "[0-9][0-9][0-9][0-9][0-9][P][T][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "EFT930S", status: "ENABLED", type: "PRODUCT", mask: "99999PS99999999", pattern: "[0-9][0-9][0-9][0-9][0-9][P][S][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "ICT220", status: "ENABLED", type: "PRODUCT", mask: "99999CT99999999", pattern: "[0-9][0-9][0-9][0-9][0-9][C][T][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "I5100MMD012B", description: "POS I5100", status: "ENABLED", type: "PRODUCT", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "I5100MMD047A", description: "POS I5100", status: "ENABLED", type: "PRODUCT", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "I5100PPT033B", description: "POS I5100", status: "ENABLED", type: "PRODUCT", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "NURIT8320S", description: "POS NURIT 8320", status: "ENABLED", type: "PRODUCT", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Verifone"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "IWL250", status: "ENABLED", type: "PRODUCT", mask: "99999WL99999999", pattern: "[0-9][0-9][0-9][0-9][0-9][W][L][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+itens <<  [name: "ICT250", status: "ENABLED", type: "PRODUCT", mask: "99999CT99999999", pattern: "[0-9][0-9][0-9][0-9][0-9][C][T][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", cost: BigDecimal.ZERO, manufacturer: Manufacturer.findByName("Ingenico"), family: Family.findByName("POS"), consumable: false]
+
+itens.each {
+def modelInstance = new Model()
+modelInstance.properties = it
+println modelInstance.validate()
+println modelInstance.save()
+println modelInstance.errors
+}
+
+// true 
+// BANJO 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// I5100 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// I8200 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// I7910 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// ACQUA
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// EFT930G
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// EFT930S
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// ICT220 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// I5100MMD012B 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// I5100MMD047A 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// I5100PPT033B 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// NURIT8320S 
+// grails.validation.ValidationErrors: 0 errors
+// true
+// IWL250
+// grails.validation.ValidationErrors: 0 errors
+// true
+// ICT250
+// grails.validation.ValidationErrors: 0 errors

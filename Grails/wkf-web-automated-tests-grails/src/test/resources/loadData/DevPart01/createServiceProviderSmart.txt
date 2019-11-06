@@ -1,0 +1,58 @@
+import br.com.careman.domain.*
+import br.com.careman.domain.address.*
+    
+def addressInstance = new Address()
+addressInstance.address = "Avenida Corrientes"
+addressInstance.number = "2150"
+addressInstance.complement = ""
+addressInstance.district = "Centro"
+addressInstance.zipCode = "C1043ABN"
+addressInstance.city = City.findByNameAndState("Buenos Aires", State.findByName("Buenos Aires"))
+
+println addressInstance.validate()
+println addressInstance.save()
+println addressInstance.errors
+
+def serviceProvider = new ServiceProvider(address: addressInstance)
+serviceProvider.hq = true
+serviceProvider.documentType = "CNPJ"
+serviceProvider.documentNumber = "83488184000108"
+serviceProvider.alias = "Smart"
+serviceProvider.contactName = "Smart"
+serviceProvider.status = "ENABLED"
+serviceProvider.name = "Smart"
+serviceProvider.email = "info@smart.com.ar"
+serviceProvider.phoneNumber = "541132636670"
+serviceProvider.type = "FIELD"
+
+println serviceProvider.validate()
+println serviceProvider.save()
+println serviceProvider.errors
+
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Instalação"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Manutenção"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Desinstalação"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Rollout"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Troca de Tecnologia"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Reconfiguração"))
+serviceProvider.addToServiceGroups(ServiceGroup.findByName("Cancelamento"))
+
+serviceProvider.addToContractors(Contractor.findByAlias("CABAL"))
+serviceProvider.addToContractors(Contractor.findByAlias("POSNET"))
+serviceProvider.addToContractors(Contractor.findByAlias("TICKET"))
+serviceProvider.addToContractors(Contractor.findByAlias("BANRISUL"))
+
+println serviceProvider.validate()
+println serviceProvider.save()
+println serviceProvider.errors
+
+// expected
+// true 
+// Avenida Corrientes
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Smart 
+// grails.validation.ValidationErrors: 0 errors 
+// true 
+// Smart 
+// grails.validation.ValidationErrors: 0 errors

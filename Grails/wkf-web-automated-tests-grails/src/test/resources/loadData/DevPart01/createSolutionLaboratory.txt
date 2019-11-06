@@ -1,0 +1,19 @@
+import br.com.careman.domain.*
+
+def solutionLaboratoryInstance01 = new SolutionLaboratory(status: "ENABLED")
+solutionLaboratoryInstance01.name = "Repara Carcaza"
+println solutionLaboratoryInstance01.validate()
+println solutionLaboratoryInstance01.save()
+println solutionLaboratoryInstance01.errors
+
+def solutionLaboratoryInstance02 = new SolutionLaboratory(status: "ENABLED")
+solutionLaboratoryInstance02.name = "Cambia Display"
+println solutionLaboratoryInstance02.validate()
+println solutionLaboratoryInstance02.save()
+println solutionLaboratoryInstance02.errors
+
+def solutionLaboratoryInstance03 = new SolutionLaboratory(status: "ENABLED")
+solutionLaboratoryInstance03.name = "Cambia Impresora"
+println solutionLaboratoryInstance03.validate()
+println solutionLaboratoryInstance03.save()
+println solutionLaboratoryInstance03.errors

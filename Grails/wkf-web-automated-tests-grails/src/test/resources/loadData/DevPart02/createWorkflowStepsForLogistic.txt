@@ -1,0 +1,274 @@
+import br.com.careman.domain.*
+import static br.com.careman.groovy.enums.StepStatusType.*
+import static br.com.careman.groovy.enums.WorkflowType.*
+import static br.com.careman.groovy.enums.StepRuleType.*
+
+def stepStatuses = [:]
+StepStatus.where{workflowType == SHIPMENT_ORDER && status == 'ENABLED'}.each{
+    stepStatuses[it.name] = it
+}
+
+def stepRules = [:]
+StepRule.where{workflowType == SHIPMENT_ORDER && enabled}.each{
+    stepRules[it.id] = it
+}
+
+def validations = [
+    'rule_Carrier':41l,
+    'rule_Invoice_Number':42l,
+    'rule_Invoice_Date':43l,
+    'rule_Outbound_Date':44l,
+    'rule_Weight':45l,
+    'rule_Only_BAD_Equipments':46l,
+    'rule_Only_GOOD_Equipments':47l
+]
+
+def triggers = [
+    'rule_Set_Equipments_situation_to_BAD':48l,
+    'rule_Set_Equipments_situation_to_GOOD':49l,
+    'rule_Turn_Equipments_as_Inventoried':50l
+]
+
+def customTriggers = [
+    'updateEquipmentLocation':51l,
+    'addWarranty':52l
+]
+
+[
+    [type:SHIPMENT_ORDER, name:'Workflow Logística - Remessa Simples BAD', steps: [
+        [from:'Nova', to:'Preparação', rules:[
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number']
+        ]],
+        [from:'Preparação', to:'Despachado', rules:[
+            validations['rule_Only_BAD_Equipments'],
+            validations['rule_Carrier'],
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number'],
+            validations['rule_Outbound_Date']
+        ]],
+        [from:'Preparação', to:'Cancelado']
+    ]],
+
+    [type:SHIPMENT_ORDER, name:'Workflow Logística - Remessa Simples GOOD', steps: [
+        [from:'Nova', to:'Preparação', rules:[
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number']
+        ]],
+        [from:'Preparação', to:'Despachado', rules:[
+            validations['rule_Only_GOOD_Equipments'],
+            validations['rule_Carrier'],
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number'],
+            validations['rule_Outbound_Date']
+        ]],
+        [from:'Preparação', to:'Cancelado']
+    ]],
+
+    [type:SHIPMENT_ORDER, name:'Workflow Logística - Remessa Complexa', steps: [
+        [from:'Nova', to:'Preparação', rules:[
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number']
+        ]],
+        [from:'Preparação', to:'Em Transito', rules:[
+            validations['rule_Carrier'],
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number'],
+            validations['rule_Outbound_Date']
+        ]],
+        [from:'Em Transito', to:'Recebido OK PS', rules:[
+            validations['rule_Carrier'],
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number']
+        ]],
+        [from:'Em Transito', to:'Recusado no Destino']
+    ]],
+
+    [type:SHIPMENT_ORDER, name:'Ingresso de Equipamentos - GOOD', steps: [
+        [from:'Nova', to:'Ingresso de Equiptos', rules:[
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number']
+        ]],
+        [from:'Ingresso de Equiptos', to:'Recebido OK PS', rules:[
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number'],
+            validations['rule_Outbound_Date'],
+            triggers['rule_Set_Equipments_situation_to_GOOD']
+        ]],
+        [from:'Ingresso de Equiptos', to:'Cancelado']
+    ]],
+
+    [type:SHIPMENT_ORDER, name:'Ingresso de Equipamentos - BAD', steps: [
+        [from:'Nova', to:'Ingresso de Equiptos', rules:[
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number']
+        ]],
+        [from:'Ingresso de Equiptos', to:'Recebido OK PS', rules:[
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number'],
+            validations['rule_Outbound_Date'],
+            triggers['rule_Set_Equipments_situation_to_BAD']
+        ]],
+        [from:'Ingresso de Equiptos', to:'Cancelado']
+    ]],
+
+    [type:SHIPMENT_ORDER, name:'Ordens de Entrega - GOOD', steps: [
+        [from:'Nova', to:'Preparação', rules:[
+            validations['rule_Only_GOOD_Equipments']
+        ]],
+        [from:'Preparação', to:'PRÉ-DESPACHO', rules:[
+            validations['rule_Only_GOOD_Equipments'],
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number']
+        ]],
+        [from:'PRÉ-DESPACHO', to:'DESPACHADO GOOD', rules:[
+            validations['rule_Carrier'],
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number'],
+            validations['rule_Outbound_Date'],
+            validations['rule_Weight'],
+            customTriggers['addWarranty']
+        ]],
+        [from:'PRÉ-DESPACHO', to:'Cancelado', rules:[
+            validations['rule_Only_GOOD_Equipments']
+        ]]
+    ]],
+
+    [type:SHIPMENT_ORDER, name:'Ordens de Entrega - BAD', steps: [
+        [from:'Nova', to:'Preparação', rules:[
+            validations['rule_Only_BAD_Equipments']
+        ]],
+        [from:'Preparação', to:'PRÉ-DESPACHO', rules:[
+            validations['rule_Only_BAD_Equipments'],
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number']
+        ]],
+        [from:'PRÉ-DESPACHO', to:'DESPACHADO GOOD', rules:[
+            validations['rule_Carrier'],
+            validations['rule_Invoice_Date'],
+            validations['rule_Invoice_Number'],
+            validations['rule_Outbound_Date'],
+            validations['rule_Weight']
+        ]],
+        [from:'PRÉ-DESPACHO', to:'Cancelado', rules:[
+            validations['rule_Only_BAD_Equipments']
+        ]]
+    ]]
+
+].each {
+
+    def workflowInstance = new Workflow(status:'ENABLED', workflowType:it.type, name:it.name)
+    it.steps.each { step ->
+        workflowInstance.addToSteps(new Step(status: 'ENABLED',
+                                               from: stepStatuses[step.from],
+                                                 to: stepStatuses[step.to],
+                                              rules: step.rules.collect{stepRules[it]}))
+    }
+    workflowInstance.save()
+    def printRules = { rules ->
+        if(rules) {
+            return "\n${rules.collect{"${it.identifier} (${it.errors})"}.sort().join('\n')}"
+        }
+        ''
+    }
+    def printStep = { step ->
+        "${step.toString()} (${step.errors})${printRules(step.rules)}"
+    }
+    println "${workflowInstance} (${workflowInstance.errors})"
+    println workflowInstance.steps.collect{printStep(it)}.sort().join('\n')
+}
+/*
+    Workflow Logística - Remessa Simples BAD (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Preparação (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    Preparação -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    Preparação -> Despachado (grails.validation.ValidationErrors: 0 errors)
+    rule_Carrier (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Only_BAD_Equipments (grails.validation.ValidationErrors: 0 errors)
+    rule_Outbound_Date (grails.validation.ValidationErrors: 0 errors)
+
+    Workflow Logística - Remessa Simples GOOD (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Preparação (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    Preparação -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    Preparação -> Despachado (grails.validation.ValidationErrors: 0 errors)
+    rule_Carrier (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Only_GOOD_Equipments (grails.validation.ValidationErrors: 0 errors)
+    rule_Outbound_Date (grails.validation.ValidationErrors: 0 errors)
+
+    Workflow Logística - Remessa Complexa (grails.validation.ValidationErrors: 0 errors)
+    Em Transito -> Recebido OK PS (grails.validation.ValidationErrors: 0 errors)
+    rule_Carrier (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    Em Transito -> Recusado no Destino (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Preparação (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    Preparação -> Em Transito (grails.validation.ValidationErrors: 0 errors)
+    rule_Carrier (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Outbound_Date (grails.validation.ValidationErrors: 0 errors)
+
+    Ingresso de Equipamentos - GOOD (grails.validation.ValidationErrors: 0 errors)
+    Ingresso de Equiptos -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    Ingresso de Equiptos -> Recebido OK PS (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Outbound_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Set_Equipments_situation_to_GOOD (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Ingresso de Equiptos (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+
+    Ingresso de Equipamentos - BAD (grails.validation.ValidationErrors: 0 errors)
+    Ingresso de Equiptos -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    Ingresso de Equiptos -> Recebido OK PS (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Outbound_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Set_Equipments_situation_to_BAD (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Ingresso de Equiptos (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+
+    Ordens de Entrega - GOOD (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Preparação (grails.validation.ValidationErrors: 0 errors)
+    rule_Only_GOOD_Equipments (grails.validation.ValidationErrors: 0 errors)
+    PRÉ-DESPACHO -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Only_GOOD_Equipments (grails.validation.ValidationErrors: 0 errors)
+    PRÉ-DESPACHO -> DESPACHADO GOOD (grails.validation.ValidationErrors: 0 errors)
+    addWarranty (grails.validation.ValidationErrors: 0 errors)
+    rule_Carrier (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Outbound_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Weight (grails.validation.ValidationErrors: 0 errors)
+    Preparação -> PRÉ-DESPACHO (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Only_GOOD_Equipments (grails.validation.ValidationErrors: 0 errors)
+
+    Ordens de Entrega - BAD (grails.validation.ValidationErrors: 0 errors)
+    Nova -> Preparação (grails.validation.ValidationErrors: 0 errors)
+    rule_Only_BAD_Equipments (grails.validation.ValidationErrors: 0 errors)
+    PRÉ-DESPACHO -> Cancelado (grails.validation.ValidationErrors: 0 errors)
+    rule_Only_BAD_Equipments (grails.validation.ValidationErrors: 0 errors)
+    PRÉ-DESPACHO -> DESPACHADO GOOD (grails.validation.ValidationErrors: 0 errors)
+    rule_Carrier (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Outbound_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Weight (grails.validation.ValidationErrors: 0 errors)
+    Preparação -> PRÉ-DESPACHO (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Date (grails.validation.ValidationErrors: 0 errors)
+    rule_Invoice_Number (grails.validation.ValidationErrors: 0 errors)
+    rule_Only_BAD_Equipments (grails.validation.ValidationErrors: 0 errors)
+*/

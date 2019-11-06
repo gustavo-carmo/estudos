@@ -1,0 +1,17 @@
+<suite name="Workfinity Test-Suite">
+
+    <test name="Isolated Tests" preserve-order="true" parallel="classes" thread-count="3">
+        <classes>
+            <class name="br.com.workfinity.web.tests.parallel.ModelTestCRUD"/>
+            <class name="br.com.workfinity.web.tests.parallel.CustomerTestCRUD"/>
+            <class name="br.com.workfinity.web.tests.parallel.EquipmentTestCRUD"/>
+            <class name="br.com.workfinity.web.tests.parallel.DefectTestCRUD" />
+            <class name="br.com.workfinity.web.tests.parallel.ReasonForCancellationTestCRUD"/>
+            <class name="br.com.workfinity.web.tests.parallel.FamilyTestCRUD"/>
+            <class name="br.com.workfinity.web.tests.parallel.ContractorTestCRUD"/>
+            <class name="br.com.workfinity.web.tests.parallel.RecessTestCRUD"/>
+            <class name="br.com.workfinity.web.tests.parallel.ServiceLevelAgreementGroupTestCRUD"/>
+            <class name="br.com.workfinity.web.tests.parallel.WorkFlowTestCRUD"/>
+        </classes>
+    </test>
+</suite>

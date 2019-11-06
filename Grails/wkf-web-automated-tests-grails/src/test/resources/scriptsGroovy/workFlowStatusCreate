@@ -1,0 +1,11 @@
+import br.com.careman.domain.*
+import br.com.careman.groovy.enums.StepStatusType
+import br.com.careman.groovy.enums.WorkflowType
+
+	println new StepStatus(
+		name: "%name%",
+		status: 'ENABLED',
+		type: StepStatusType.%type%,
+		workflowType: WorkflowType.%workflowType%,
+		visibleShipmentTo: true
+	).save(failOnError: true, flush: true)

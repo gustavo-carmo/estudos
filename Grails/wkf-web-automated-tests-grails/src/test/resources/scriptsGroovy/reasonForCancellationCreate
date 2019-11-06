@@ -1,0 +1,6 @@
+import br.com.careman.domain.*
+
+	new ReasonForCancellation(
+		    name: "%name%",         	 
+		    status: "ENABLED"		    
+    ).save(failOnError: true)

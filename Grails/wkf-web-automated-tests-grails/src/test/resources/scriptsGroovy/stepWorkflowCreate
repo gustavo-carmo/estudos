@@ -1,0 +1,9 @@
+import br.com.careman.domain.*
+    
+Workflow.findByName("%workflow%").addToSteps(
+    new Step(
+        status: 'ENABLED',
+    	from: StepStatus.findByName("%from%"),
+    	to: StepStatus.findByName("%to%")
+	)
+)

@@ -1,0 +1,3 @@
+import br.com.careman.domain.OpeningHoursGroup
+
+	OpeningHoursGroup.findByName("%name%").delete(failOnError:true, flush:true)

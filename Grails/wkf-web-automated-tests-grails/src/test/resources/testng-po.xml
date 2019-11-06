@@ -1,0 +1,12 @@
+<suite name="Workfinity Test-Suite" preserve-order="true" parallel="classes" thread-count="1">
+
+    <test name="Creating AdmUser">
+        <classes>
+            <class name="br.com.workfinity.web.tests.user.CreateUserAdmWithAllRoles"/>            
+        </classes>
+    </test>
+
+<!--     <listeners>
+        <listener class-name="careman.html.TestListener"/>
+    </listeners> -->
+</suite>

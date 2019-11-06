@@ -1,0 +1,25 @@
+import br.com.careman.domain.*
+	
+Model model = new Model()
+model.name = "%name%"
+model.status = 'ENABLED'
+model.type = "%type%"
+model.description = "%name%"
+model.manufacturer = Manufacturer.findByName("%manufacturer%")
+model.family = Family.findByName("%family%")
+model.equipmentType = EquipmentType.findByName("%equipmentType%")
+model.consumable = %consumable%
+
+def models = [%models%]
+
+if (models.size() > 0) {
+    models.each() {
+        model.addToModels(Model.findByName(it))
+    }
+}
+
+if (model.type == "SUPPLY"){
+ 	model.consumable = true  
+}
+
+model.save(failOnError: true, flush: true)

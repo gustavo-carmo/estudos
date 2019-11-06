@@ -1,0 +1,6 @@
+import br.com.careman.domain.*
+    
+ServiceAreas serviceAreas = ServiceAreas.findByName("%serviceAreas%")
+serviceAreas.addToRegions(Regions.findByName("%addArea%"))
+
+serviceAreas.save(failOnError: true, flush: true)

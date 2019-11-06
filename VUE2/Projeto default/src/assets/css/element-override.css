@@ -1,0 +1,13 @@
+div.el-form-item label.el-form-item__label {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  font-size: 90%;
+}
+
+div.el-form-item {
+  margin-bottom: 12px;
+}
+
+.el-table thead>tr>th, .el-table th>.cell {
+  background-color: inherit;
+}

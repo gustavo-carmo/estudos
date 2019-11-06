@@ -1,0 +1,3 @@
+import br.com.careman.domain.*
+	
+	println new Manufacturer(status:'ENABLED', name:"%name%").save(failOnError: true)

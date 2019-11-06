@@ -1,0 +1,3 @@
+import br.com.careman.domain.ServiceGroup
+
+	ServiceGroup.findByName("%name%").delete(failOnError: true, flush: true)
