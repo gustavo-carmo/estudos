@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Curso Javascript</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <button onclick="showAlert()">Me Pressione - Mostra Alerta</button>
+
+        <button onmouseover="showAlert()">Me Pressione - Coloca o cursor em cima do botão</button>
+
+        <input type="text" onkeypress="talkSomething()" />
+    </div>
+
+    <!-- Uma dica é deixar o script como ultima linha do console, pois assim garantimos que quando for necessário a utilização do mesmo ele esteja na tela -->
+    <script>
+        
+        function showAlert() {
+            alert('Botão clicado');
+        }
+
+        function talkSomething() {
+            console.log('Something');
+        }
+
+    </script>
+</body>
+</html>

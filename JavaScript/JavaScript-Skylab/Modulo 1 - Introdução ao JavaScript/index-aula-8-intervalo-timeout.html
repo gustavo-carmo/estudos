@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Curso Javascript</title>
+</head>
+
+<body>
+
+    <!-- Uma dica é deixar o script como ultima linha do console, pois assim garantimos que quando for necessário a utilização do mesmo ele esteja na tela -->
+    <script>
+        
+        function exibeAlgo() {
+            console.log ("Olá =D");
+        }
+
+        // Se chamar a função sem passar (), você vai passar a função para o escopo desejado e o escopo para o qual vc passou vai fazer algo com a função
+        // ou seja exibeAlgo() == Executa a função; exibeAlgo == passa a função
+        //setInterval(exibeAlgo, 1000);
+        setInterval(() => {
+            console.log("Teste =D");
+        }, 1000); //Executa varias vezes de acordo com o intervalo
+
+        setTimeout(exibeAlgo, 5000); // Executa 1 vez mas após o tempo definido
+
+
+    </script>
+</body>
+</html>
