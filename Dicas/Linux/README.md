@@ -10,3 +10,13 @@ Para identificar a quantidade de espaço que você tem em cada pasta siga os seg
 
 
 *** ESPAÇO NO LINUX ***
+
+##### INSTALAÇÃO #####
+
+/**** ARQUIVOS .DEB ****/
+1 - abra o terminal 
+2 - vá na pasta do arquivo
+3 - executar o comando
+    $ sudo dpkg -i <nome do arquivo>.deb 
+
+##### INSTALAÇÃO #####
