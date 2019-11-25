@@ -1,0 +1,48 @@
+//Testar as requisições - Schema Cliente
+//Bye, Bye Postman :) (Mas claro, ainda dá para utilizá-lo se preferir)
+//Instale a extensão REST Client no Visual Studio Code para conseguir utilizar este recurso
+@baseUrl = http://localhost:3000
+
+
+###
+// POST produtos
+POST {{baseUrl}}/produtos
+Content-Type: application/json
+
+{
+    "nome": "Ovo",
+    "descricao": "Ovo Caipira",
+    "codigobarra": "1234567890123",
+    "preco": "10.00"
+}
+
+###
+// GET produtos
+GET {{baseUrl}}/produtos
+
+###
+// GET produtos/:id
+@id = 5d8e07242527b6174d61f480
+GET {{baseUrl}}/produtos/{{id}}
+
+###
+// GET produtos/:texto
+@texto = sabao
+GET {{baseUrl}}/produtos/texto/{{texto}}
+
+###
+// PUT /produtos/:id
+@idUpdate = 5d8e07242527b6174d61f480
+PUT {{baseUrl}}/produtos/{{idUpdate}}
+Content-Type: application/json
+
+{
+    "nome": "Produto sendo alterado",
+    "descricao": "Descrição alterada",
+    "codigobarra": "1234561234567",
+    "preco": "18.35"
+}
+###
+// DELETE produtos/:id
+@idDelete = 5d8e07242527b6174d61f480
+DELETE {{baseUrl}}/produtos/{{idDelete}}

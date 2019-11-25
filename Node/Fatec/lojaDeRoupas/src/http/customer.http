@@ -1,0 +1,42 @@
+@baseUrl = http://localhost:8080
+
+
+###
+// POST customers
+POST {{baseUrl}}/customers
+Content-Type: application/json
+
+{
+	"name": "Teste Exclusão1",
+	"email": "bla@teste.com",
+	"cellphone": "11974859743",
+	"cpf": "324.324.333-35",
+	"cep": "13308074"
+}
+
+###
+// GET customers
+GET {{baseUrl}}/customers
+
+###
+// GET customers/:id
+@id = 5dae3fa911ffc279386a1926
+GET {{baseUrl}}/customers/{{id}}
+
+###
+// PUT /customers/:id
+@idUpdate = 5dae3fa911ffc279386a1926
+PUT {{baseUrl}}/customers/{{idUpdate}}
+Content-Type: application/json
+
+{
+	"name": "Teste update",
+	"email": "bla@teste.com",
+	"cellphone": "11974859743",
+	"cpf": "324.424.333-35",
+	"cep": "13308074"
+}
+###
+// DELETE customers/:id
+@idDelete = 5dae40cf3507197a471c42e7
+DELETE {{baseUrl}}/customers/{{idDelete}}
