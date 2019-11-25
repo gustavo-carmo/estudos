@@ -1,0 +1,38 @@
+// ----- Bibliotecas ---------
+#include <dht.h> 
+
+// =======================================================================================
+// ----- Mapeamento de Hardware ---------
+#define dht_pin 5
+
+// =======================================================================================
+// ----- Mapeamento de Objetos ---------
+dht my_dht;
+
+// =======================================================================================
+// ----- Mapeamento de Variáveis Globais ---------
+int temperatura = 0x00,
+    umidade     = 0x00
+
+// =======================================================================================
+// ----- Configurações iniciais ---------
+void setup() {
+  Serial.begin(9600); //serial em 9600
+}
+
+// =======================================================================================
+// ----- Loop Infinito ---------
+void loop() {
+  my_dht.read11(5);
+
+  temperatura = my_dht.temperature;
+  umidade     = my_dht.humidity;
+
+  Serial.print(temperatura);
+  Serial.print(" C");
+  Serial.print(" \t");
+  Serial.print(umidade);
+  Serial.print("%");
+
+  delay(1000);  
+}
