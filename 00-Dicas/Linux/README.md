@@ -19,4 +19,8 @@ Para identificar a quantidade de espaço que você tem em cada pasta siga os seg
 3 - executar o comando
     $ sudo dpkg -i <nome do arquivo>.deb 
 
+#Ambiente Pantheon(Desktop do Linux elementary) no Ubuntu
+https://www.edivaldobrito.com.br/ambiente-pantheon-no-ubuntu/
+https://www.edivaldobrito.com.br/ambiente-pantheon-no-ubuntu-18-04/
+
 ##### INSTALAÇÃO #####

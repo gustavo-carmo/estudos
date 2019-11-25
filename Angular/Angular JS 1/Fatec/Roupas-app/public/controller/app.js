@@ -45,7 +45,7 @@ app.controller('estoqueController',
         };
         function getCustomers() {
             $scope.dados = { customers: null, customer: null }
-            /*$http({
+            $http({
                 method: 'get',
                 url: urlBase + '/customers'
             }).then(function (response) {
@@ -53,7 +53,6 @@ app.controller('estoqueController',
             }, function (error) {
                 $scope.mensagem = { cor: 'danger', titulo: 'Não foi possível obter os customers. Verifique o backend!' + error.data.message }
             });
-            */
            $scope.dados = [];
         }
         // Carrega os dados do customer pelo Id para a edição
