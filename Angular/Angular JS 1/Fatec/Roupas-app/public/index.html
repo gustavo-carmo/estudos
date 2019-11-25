@@ -1,0 +1,33 @@
+<html>
+    <head>  
+        <meta charset="UTF-8" />
+        <title>Controle de Estoque</title>
+        <!-- Definindo o ícone que aparecerá na aba do navegador -->
+        <link rel="icon" type="image/ico" href="estoque.ico"/>   
+        <!-- Carregando o Material Icons -->     
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <!-- BootStrap -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">              
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>        
+        <!-- Angular 1.7 -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
+        <!-- Angular 1.7 em pt-BR -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/i18n/angular-locale_pt-br.js"></script>
+        <!-- Angular Route 1.7 (utilizado para as rotas da aplicação) -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular-route.min.js"></script>        
+        <!-- Angular ngMask 3.0.16 (utilizado para definir a máscara nos campos)-->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ngMask/3.1.1/ngMask.min.js"></script>        
+        <!-- app -->
+        <script type="text/javascript" src="controller/app.js"></script>         
+    </head>
+    <body ng-app="estoqueApp" ng-controller="estoqueController"> 
+        <!-- carregando o cabecalho -->
+        <div ng-include src="'views/cabecalho.html'"></div>        
+        <!-- o conteudo de cada partial sera carregado abaixo atraves do ng-view. O Angular utiliza as rotas para saber qual view deverá carregar -->
+        <div ng-view></div>
+        <!-- carregando a pagina -->
+        <div ng-include src="'views/rodape.html'"></div>
+    </body>
+</html>

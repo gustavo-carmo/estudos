@@ -1,0 +1,120 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- coluna do formulario -->
+    <div class="col-md-6">
+      <!-- criacao do card do formulario -->
+      <div class="card ">
+        <div class="card-header bg-primary text-white">
+          <h4> <i class="material-icons">receipt</i> Cadastro de Customers</h4>
+        </div>
+        <div class="card-body">
+          <!-- formulario criado através do site https://bootstrapformbuilder.com/ -->
+          <form name="formGrupo" class="form-horizontal" ng-submit="salvaCustomer(dados.customer)">
+            <div class=" form-group row">
+              <label for="nome" class="col-4 col-form-label">Nome</label>
+              <div class="col-8">
+                <input id="nome" name="nome" placeholder="Nome resumido do Customer" type="text" class="form-control" ng-model="dados.customer.nome"
+                  required="required">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="descricao" class="col-4 col-form-label">Descrição</label>
+              <div class="col-8">
+                <textarea id="descricao" name="descricao" cols="40" rows="5" class="form-control" ng-model="dados.customer.descricao"
+                  required="required"></textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="cbarra" class="col-4 col-form-label">Código de Barra</label>
+              <div class="col-8">
+                <input id="cbarra" name="cbarra" placeholder="9.999999.999999" type="text" class="form-control" ng-model="dados.customer.codigobarra"
+                  required="required" mask="9.999999.999999">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="preco" class="col-4 col-form-label">Preço</label>
+              <div class="col-8">
+                <input id="preco" name="preco" placeholder="0,00" type="number" min="0" step="0.01" required="required" ng-model="dados.customer.preco"
+                  class="form-control">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="offset-4 col-8">
+                <button name="salvar" type="submit" class="btn btn-primary"><i class="material-icons">save</i>
+                  Salvar</button>
+                <button name="voltar" type="button" class="btn btn-danger"><i class="material-icons">cancel</i>
+                  Cancelar</button>                
+              </div>
+            </div>
+          </form>          
+        </div>
+        <div class="card-footer text-white bg-primary">
+          <small>Campos marcados com * são de preenchimento obrigatório</small>
+        </div>
+      </div>
+    </div>
+    <!-- coluna da tabela -->
+    <div class="col-md-6">
+      <!-- caixa de Pesquisa (somente é exibida quando há algum registro no array) -->
+      <div ng-show="dados.customers.length !== 0">
+        <div class="input-group mb-6">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="buscaCustomer"><i class="material-icons">search</i></span>
+          </div>
+          <input type="text" class="form-control" placeholder="Procurar..." ng-model="filtraCustomer">
+        </div>
+      </div>
+      <!-- fim da caixa de pesquisa -->
+
+      <!-- tabela com os dados. Ao inicializar, carrega os dados no array -->
+      <div class="card card-primary">
+        <div class="card-header bg-secondary text-white">
+          <h4><i class="material-icons">list</i> Listagem dos Clientes </h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover table-bordered" ng-init="carregaCustomers();" ng-show="dados.customers.length > 0">
+              <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Código de Barras</th>
+                <th>Preço</th>
+                <th>Criado em</th>
+                <th colspan="2">Opções</th>
+              </tr>
+              <tr ng-repeat="prod in dados.customers | orderBy:'name':false | filter:filtraCustomer">
+                <td>{{prod.nome}}</td>
+                <td>{{prod.descricao}}</td>
+                <td>{{prod.codigobarra}}</td>
+                <td>{{prod.preco | currency }}</td>
+                <td>{{prod.createdAt | date:'shortDate'}}</td>
+                <td>
+                  <button type="button" ng-click="obtemCustomerPeloId(prod._id)" class="btn btn-info"
+                    title="Editar o registro corrente"><i class="material-icons">edit</i><small>Editar</small>
+                  </button>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-danger" ng-click="confirmaExclusaoCustomer(prod)"
+                    title="Apagar o registro corrente"><i class="material-icons">delete</i><small>Excluir</small>
+                  </button>
+
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer" ng-show="dados.customers.length > 0">
+          <span class="badge pull-right">Total de Registros: {{(dados.customers|filter:filtraCustomer).length}} de
+            {{dados.customers.length}}</span>
+        </div>
+        <!-- Alerta quando não existem registros -->
+        <div class="alert alert-primary" ng-show="dados.customers.length === 0">
+          <p class="text-primary">
+            <i class="material-icons">warning</i> <br>
+            Ainda não há nenhum registro cadastrado.
+          </p>
+        </div>
+        <!-- fim do alerta -->
+      </div>
+    </div>
+  </div>

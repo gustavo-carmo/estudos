@@ -1,0 +1,29 @@
+<!-- Para ter sugestões de cabeçalhos com Bootstrap, visite: http://bootsnipp.com/ -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            
+            <nav class="navbar fixed-top navbar-dark bg-primary">
+                <a class="navbar-brand" href="#">Projeto Loja de Roupas</a>
+            </nav>
+            <br><br><br>
+    
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="material-icons">home</i> Início</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!customers"><i class="material-icons">receipt</i> Clientes</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" ng-show="mensagem.titulo">
+        <div class="alert alert-{{mensagem.cor}} alert-dismissible fade show" role="alert">
+             {{mensagem.titulo}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>          
+    </div>
+</div>
