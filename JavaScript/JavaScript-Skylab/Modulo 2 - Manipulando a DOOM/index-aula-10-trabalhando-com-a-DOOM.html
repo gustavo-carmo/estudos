@@ -8,20 +8,32 @@
 <body>
 
     <div id="app">
-        <input type="text" name="nome" />
+        <input type="text" name="name" id="name" class="name-input" />
 
-        <button class="botao"></button>
+        <button class="botao">Adicionar</button>
     </div>
 
     <!-- Uma dica é deixar o script como ultima linha do console, pois assim garantimos que quando for necessário a utilização do mesmo ele esteja na tela -->
     <script>
         
-        function showAlert() {
-            alert('Botão clicado');
-        }
+        // Buscando elementos na DOOM
+        var inputElement = document.getElementById('name');
+        var inputElement2 = document.getElementsByTagName('input')[0];
+        var inputElement3 = document.getElementsByClassName('name-input')[0];
 
-        function talkSomething() {
-            console.log('Something');
+        // Outra forma de buscar os elementos na DOOM
+        var inputElement4 = document.querySelector('body div#app input'); // Query Selector sempre retorna 1 elemento
+        var inputElement5 = document.querySelector('input[name=name]');
+
+        var inputElement6 = document.querySelectorAll('input'); // Query Selector All retorna mais de um elemento
+        // ---------------------------------------------------------------
+
+        var btnElement = document.querySelector('button.botao');
+
+        btnElement.onclick = function () {
+            var text = inputElement5.value;
+
+            alert('Botão clicado: ' + text);
         }
 
     </script>

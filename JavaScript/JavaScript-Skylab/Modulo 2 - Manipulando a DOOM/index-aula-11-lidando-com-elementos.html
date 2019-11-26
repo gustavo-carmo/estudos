@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Curso Javascript</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <input id="name" />
+
+    </div>
+
+    <!-- Uma dica é deixar o script como ultima linha do console, pois assim garantimos que quando for necessário a utilização do mesmo ele esteja na tela -->
+    <script>
+        var linkElement = document.createElement('a'); // Create Element passar a tag que você deseja criar
+
+        linkElement.setAttribute('href', 'https://github.com/gustavo-carmo/estudos');
+        linkElement.setAttribute('title', 'Gustavo Carmo Github');
+        
+        var textElement = document.createTextNode('Acessar Github Gustavo');
+        linkElement.appendChild(textElement);
+
+        var containerElement = document.querySelector('#app');
+        containerElement.appendChild(linkElement);
+
+        var inputElement = document.querySelector('#name');
+        // é possivel remover elementos da tela das duas formas abaixo
+        //inputElement.remove(); 
+        //containerElement.removeChild(inputElement);
+    </script>
+</body>
+</html>
