@@ -24,3 +24,9 @@ https://www.edivaldobrito.com.br/ambiente-pantheon-no-ubuntu/
 https://www.edivaldobrito.com.br/ambiente-pantheon-no-ubuntu-18-04/
 
 ##### INSTALAÇÃO #####
+
+##### MATAR UM SERVIÇO RODANDO EM ALGUMA PORTA #####
+
+$ fuser -n tcp <numero da porta>
+
+##### MATAR UM SERVIÇO RODANDO EM ALGUMA PORTA #####
