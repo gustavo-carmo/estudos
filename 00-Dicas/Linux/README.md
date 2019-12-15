@@ -1,4 +1,4 @@
-*** ESPAÇO NO LINUX ***
+##### ESPAÇO NO LINUX #####
 
 
 No linux pode ser que em algum momento você vá precisar apagar alguns arquivos para obter mais espaço em disco.
@@ -9,7 +9,7 @@ Para identificar a quantidade de espaço que você tem em cada pasta siga os seg
 4 - procure as pastas que você deseja excluir e utilize o comando "rm -rf"
 
 
-*** ESPAÇO NO LINUX ***
+##### ESPAÇO NO LINUX #####
 
 ##### INSTALAÇÃO #####
 
@@ -30,3 +30,19 @@ https://www.edivaldobrito.com.br/ambiente-pantheon-no-ubuntu-18-04/
 $ fuser -n tcp <numero da porta>
 
 ##### MATAR UM SERVIÇO RODANDO EM ALGUMA PORTA #####
+
+##### COPIAR ARQUIVO DE UM OUTRO COMPUTADOR (SSH/SCP) #####
+
+syntax:
+$ scp <Arquivo> <Destino>
+
+Para copiar de B para o A enquanto logado no B (Enviar um arquivo - Upload)
+$ scp /path/to/file username@a:/path/to/destination
+
+Para copiar de B para o A enquanto logado no A (Baixar um arquivo - Download)
+$ scp username@b:/path/to/file /path/to/destination
+
+Caso deseije passar uma porta 
+$ scp -P <Porta> <Arquivo> <Destino>
+
+##### COPIAR ARQUIVO DE UM OUTRO COMPUTADOR (SSH/SCP) #####
