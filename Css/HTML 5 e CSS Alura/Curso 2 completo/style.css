@@ -1,0 +1,50 @@
+html, body {
+  margin: 0 auto;
+}
+
+h1 {
+  padding-left: 30px;
+}
+
+.principal {
+  background-color: #cccccc;
+}
+
+.principal img {
+  width: 100%;
+  max-height: 500px;
+}
+
+h2, h3, p {
+  text-align: center;
+}
+
+#missao {
+  font-size: 20px;
+}
+
+em strong {
+  /* nessa representação os 2 primeiros são para a cor vermelha, os 2 segundos para a cor verde e os ultimos para o azul */
+  color: #ff0000;
+}
+
+.beneficios {
+  background: #ffffff;
+}
+
+ul {
+  display: inline-block;
+  vertical-align: top;
+  width: 20%;
+  margin-right: 15%;
+}
+
+ul li {
+  list-style: none;
+  font-style: italic;
+}
+
+.beneficios img {
+  max-width: 55%;
+  max-height: 500px;
+}
