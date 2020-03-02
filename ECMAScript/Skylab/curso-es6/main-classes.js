@@ -5,7 +5,8 @@ class TodoList {
   }
 
   addTodo() {
-    this.todos.push("Novo todo");
+    const bla = 'Teste'
+    this.todos.push(`Novo todo ${bla}`);
     console.log(this.todos);
   }
 }
