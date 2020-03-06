@@ -69,6 +69,7 @@ $ git diff // Mostra a diferenças entre comites
 $ git tag // Geera uma versão da aplicação
 	Exemplo:
 		git tag -a <nome-da-versao> -m "Commite da versão"
+		git tag -d <nome-da-versao> // Remove uma Tag
 
 -- ATENÇÃO  - BOA PRÁTICA NUNCA COMITAR UM CÓDIGO QUE NÃO FUNCIONA --
 
