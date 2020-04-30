@@ -12,7 +12,7 @@
     "bootstrap": "^3.3.4",
     "font-awesome": "^4.0.3",
     "gritter": "^1.7.4",
-    "jquery": "^1.11.3",
+    "jquery": "^3.5.0",
     "vue": "^1.0.0",
     "vue-datepicker": "^1.2.2",
     "vue-loading": "^0.1.4",
