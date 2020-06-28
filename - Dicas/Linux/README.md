@@ -52,3 +52,9 @@ $ scp -P <Porta> <Arquivo> <Destino>
 $ sudo apt update && sudo apt dist-upgrade
 
 #### ATUALIZAR O SISTEMA ####
+
+### REMOVER UM REPOSITÓRIO PPA NO LINUX ###
+
+$ sudo add-apt-repository --remove ppa:versable/elementary-update
+
+### REMOVER UM REPOSITÓRIO PPA NO LINUX ###
