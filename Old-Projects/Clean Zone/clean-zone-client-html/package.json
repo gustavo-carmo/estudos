@@ -16,7 +16,7 @@
     "vue": "^1.0.0",
     "vue-datepicker": "^1.2.2",
     "vue-loading": "^0.1.4",
-    "vue-moment": "^2.0.1",
+    "vue-moment": "^4.1.0",
     "vue-resource": "^1.0.2",
     "vue-simple-datepicker": "^1.0.8",
     "vue-spinner": "^1.0.2",
